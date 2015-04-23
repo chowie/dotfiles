@@ -1,0 +1,196 @@
+" General Vim Configs
+set encoding=utf-8
+let mapleader= ","
+setlocal spell spelllang=en_us
+
+set lcs=eol:⌝,tab:\ \
+set relativenumber
+au BufRead,BufNewFile *.ctp setfiletype php
+au BufRead,BufNewFile *.ctp set filetype=php
+
+let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
+
+" Navigation
+nmap <leader>cn :cn <cr>
+nmap <leader>cp :cp <cr>
+nmap <C-s> <ESC>:w <cr>
+nmap <leader>sfp :set ft=php<cr>
+imap <C-s> <ESC>:w <cr>
+noremap <leader>fix :normal! magg=G'a <cr>
+noremap <leader>sop :source %<cr>
+noremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
+nmap <leader>h1 :normal! yypv$r=<CR>
+nmap <leader>h2 :normal! yypv$r-<CR>
+nmap <leader>h3 :normal! ^i### <ESC>
+nmap <leader>pi :execute "e /Users/chris/Dropbox/MSU/incoming.md"<CR>
+nnoremap <leader>idt :normal! i<C-r>=strftime("%c")<CR><CR>
+
+
+" Custimizations
+:iab <expr> dt strftime("%x")
+:iab <expr> dts strftime("%c")
+:iab <expr> uts strftime("%x %X (%Z)")
+
+if has("gui_running")
+    set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    ""set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ 10
+    set lines=999
+    set columns=115
+endif
+
+
+" VimTodo Settings"
+let g:todo_taskurl=""
+"let g:todo_browser="google-chrome"
+let g:todo_browser="open /Applications/Google\ Chrome.app/"
+let g:todo_states=[['TODO(t)', 'WORKING(W)', 'INPROGRESS(i)',  '|', 'DONE(d)', 'CANCELLED(c)'],
+    \['WAITING(w)', 'HOLD(h)', 'SOMEDAY(s)', 'CLOSED(l)']]
+let g:todo_state_colors= {
+    \'DONE': 'Green',
+    \'CLOSED': 'Grey',
+    \'CANCELLED': 'Red',
+    \'TODO': 'Blue',
+    \'INPROGRESS': 'Blue',
+    \'WAITING': 'Yellow',
+    \'HOLD': 'Grey',
+    \'SOMEDAY': 'Grey'
+    \}
+
+
+
+" PowerLine configs
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:Powerline_symbols = 'fancy'
+
+
+" CtrlP Settings
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_use_caching = 1
+
+
+" Use .vimrc.local.twitvim if available {
+    if filereadable(expand("~/.vimrc.local.twitvim"))
+        source ~/.vimrc.local.twitvim
+    endif
+" }
+
+" Convert markdown to HTML
+nmap <leader>md :% !~/bin.dropbox/Markdown.pl --html4tags % <cr>
+
+" CtrlP "
+let g:ctrlp_root_markers = ['.git','.root','.riaapp']
+
+
+" Escape/unescape & < > HTML entities in range (default current line).
+function! HtmlEntities(line1, line2, action)
+  let search = @/
+  let range = 'silent ' . a:line1 . ',' . a:line2
+  if a:action == 0  " must convert &amp; last
+    execute range . 'sno/&lt;/</eg'
+    execute range . 'sno/&gt;/>/eg'
+    execute range . 'sno/&amp;/&/eg'
+  else              " must convert & first
+    execute range . 'sno/&/&amp;/eg'
+    execute range . 'sno/</&lt;/eg'
+    execute range . 'sno/>/&gt;/eg'
+  endif
+  nohl
+  let @/ = search
+endfunction
+command! -range -nargs=1 Entities call HtmlEntities(<line1>, <line2>, <args>)
+noremap <silent> \h :Entities 0<CR>
+noremap <silent> \H :Entities 1<CR>
+
+
+" Windows settings
+if has("win32")
+    "" for some reasons, GVim for Windows doesn't automatically go to home dir
+    cd ~/
+    "" Set to use cygwin's grep instead of Windows findstr
+    set grepprg=grep
+
+    if has("gui_running")
+        " Maximize GVim
+        au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
+    endif
+
+    "" Windows copy and paste
+    "" TODO does this actually work?  need to test
+    nmap <C-V> "+gP
+    imap <C-V> <ESC><C-V>i
+    vmap <C-C> "+y
+endif
+
+
+let g:PreviewBrowsers='google-chrome,firefox,safari'
+
+" EXPERIMENTAL:
+" TODO What is this?
+vnoremap <F2> d:execute 'normal i' . join(sort(split(getreg('"'))), '')<CR>
+""vnoremap <F2> d:execute !perl -ne '$,=" ";print sort split /\s+/'<CR>
+
+
+"" Find Project Root
+function! FindProjectRoot(lookFor)
+    let pathMaker='%:p'
+    while(len(expand(pathMaker))>1)
+        let pathMaker=pathMaker.':h'
+        let fileToCheck=expand(pathMaker).'/'.a:lookFor
+        if filereadable(fileToCheck)||isdirectory(fileToCheck)
+            return expand(pathMaker)
+        endif
+    endwhile
+    return 0
+endfunction
+
+command! -range -nargs=1 VProjRoot call FindProjectRoot(<args>)
+
+nmap <leader>sr :!echo %:p:s?C:\\Users\\Christopher\\repositories\\[^\\]*\\?? <cr>
+
+
+function! GetFilePath(reg)
+    "let reg=input('Which ')
+    let filePath=expand('%:p')
+    execute 'let @'.a:reg.' = expand("%:p")'
+    echo filePath
+    return 0
+endfunction
+
+
+command! -register GetFilePath call GetFilePath(<q-reg>)
+nmap <leader>fp :GetFilePath <cr>
+
+" Open link in browser
+function! Browser()
+  let line = getline(".")
+  let gline = matchstr(line, '\(https*://\|www\.\)[^ ,;\t)]*')
+  exec '!open /Applications/Google\ Chrome.app '.gline
+  "exec '!google-chrome '.line
+endfunction
+
+map <leader>o :call Browser()<CR>
+
+" Tabularize Settings
+nmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
+vmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
+nmap <Leader>acom :Tabularize /\/\/ <CR>
+vmap <Leader>acom :Tabularize /\/\/ <CR>
+nmap <Leader>a:: :Tabularize /^[^:]*\zs\:/r1c1l1<CR>
+vmap <Leader>a:: :Tabularize /^[^:]*\zs\:/r1c1l1<CR>
+
+function! CopyMatches(reg)
+  let hits = []
+  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/ge
+  let reg = empty(a:reg) ? '+' : a:reg
+  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+endfunction
+command! -register CopyMatches call CopyMatches(<q-reg>)
+
+map <Leader>T:grep -rn "^\##" %<CR>
+
+execute "set colorcolumn=" . join(range(81,335), ',')
+highlight ColorColumn guibg=#073642 guifg=#586e75
+"call matchadd('ColorColumn', '\%81v', 100)
+
