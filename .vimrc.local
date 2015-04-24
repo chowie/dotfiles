@@ -22,9 +22,9 @@ noremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 nmap <leader>h1 :normal! yypv$r=<CR>
 nmap <leader>h2 :normal! yypv$r-<CR>
 nmap <leader>h3 :normal! ^i### <ESC>
-nmap <leader>pi :execute "e /Users/chris/Dropbox/MSU/incoming.md"<CR>
-nnoremap <leader>idt :normal! i<C-r>=strftime("%c")<CR><CR>
-
+nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
+nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
+nmap <leader>bd :normal! bd%<CR><CR>
 
 " Custimizations
 :iab <expr> dt strftime("%x")
