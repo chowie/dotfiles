@@ -5,26 +5,32 @@ setlocal spell spelllang=en_us
 
 set lcs=eol:⌝,tab:\ \
 set relativenumber
-au BufRead,BufNewFile *.ctp setfiletype php
-au BufRead,BufNewFile *.ctp set filetype=php
 
+" My Project settings"
 let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
+nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
+nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
+nmap <leader>h1 :normal! yypv$r=<CR>
+nmap <leader>h2 :normal! yypv$r-<CR>
+nmap <leader>h3 :normal! ^i### <ESC>
 
 " Navigation
 nmap <leader>cn :cn <cr>
 nmap <leader>cp :cp <cr>
 nmap <C-s> <ESC>:w <cr>
-nmap <leader>sfp :set ft=php<cr>
 imap <C-s> <ESC>:w <cr>
-noremap <leader>fix :normal! magg=G'a <cr>
 noremap <leader>sop :source %<cr>
+
+" Working in PHP
+nmap <leader>sfp :set ft=php<cr>
+au BufRead,BufNewFile *.ctp setfiletype php
+au BufRead,BufNewFile *.ctp set filetype=php
+
+" Remove problematic tabs
+noremap <leader>fix :normal! magg=G'a <cr>
+
+" Add spaces around equal sign
 noremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
-nmap <leader>h1 :normal! yypv$r=<CR>
-nmap <leader>h2 :normal! yypv$r-<CR>
-nmap <leader>h3 :normal! ^i### <ESC>
-nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
-nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
-nmap <leader>bd :normal! bd%<CR><CR>
 
 " Custimizations
 :iab <expr> dt strftime("%x")
@@ -34,8 +40,8 @@ nmap <leader>bd :normal! bd%<CR><CR>
 if has("gui_running")
     set guifont=Consolas\ for\ Powerline\ FixedD:h14
     ""set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ 10
-    set lines=999
-    set columns=115
+    set lines=62
+    set columns=150
 endif
 
 
