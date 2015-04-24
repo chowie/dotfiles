@@ -13,13 +13,14 @@ nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
 nmap <leader>h1 :normal! yypv$r=<CR>
 nmap <leader>h2 :normal! yypv$r-<CR>
 nmap <leader>h3 :normal! ^i### <ESC>
+map <leader>bd :bd<cr>
 
 " Navigation
 nmap <leader>cn :cn <cr>
 nmap <leader>cp :cp <cr>
 nmap <C-s> <ESC>:w <cr>
 imap <C-s> <ESC>:w <cr>
-noremap <leader>sop :source %<cr>
+nnoremap <leader>sop :source %<cr>
 
 " Working in PHP
 nmap <leader>sfp :set ft=php<cr>
