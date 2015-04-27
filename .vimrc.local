@@ -5,15 +5,41 @@ setlocal spell spelllang=en_us
 
 set lcs=eol:⌝,tab:\ \
 set relativenumber
+au BufRead,BufNewFile *.md setlocal textwidth=80
 
 " My Project settings"
+"======================
 let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
-nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
+"nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
+nmap <leader>pt :execute "below new /Users/chris/Dropbox/lists/todo.txt"<CR>
 nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
-nmap <leader>h1 :normal! yypv$r=<CR>
-nmap <leader>h2 :normal! yypv$r-<CR>
-nmap <leader>h3 :normal! ^i### <ESC>
-map <leader>bd :bd<cr>
+
+" Open incoming file
+
+function! OpenProjectIncoming()
+    execute "below new /Users/chris/Dropbox/MSU/incoming.md"
+     let tstamp = strftime('c%')
+     echo 'New timestamp: '. tstamp
+     "call setline(line('.'), getline('.') . ' ' . myts)
+endfunction
+
+nnoremap <leader>pi :call OpenProjectIncoming()<cr>
+nnoremap <leader>tb :execute "below new /Users/chris/Documents/code-snippets/vim-classes/beginner.md"<cr>
+
+" Markdown headings
+function! UnderlineHeading(level)
+    if a:level == 1
+        normal! yypVr=
+    elseif a:level == 2
+        normal! yypVr-
+    else
+        normal! I###
+    endif
+endfunction
+
+nnoremap <leader>h1 :call UnderlineHeading(1)<cr>
+nnoremap <leader>h2 :call UnderlineHeading(2)<cr>
+nnoremap <leader>h3 :call UnderlineHeading(3)<cr>
 
 " Navigation
 nmap <leader>cn :cn <cr>
@@ -21,6 +47,7 @@ nmap <leader>cp :cp <cr>
 nmap <C-s> <ESC>:w <cr>
 imap <C-s> <ESC>:w <cr>
 nnoremap <leader>sop :source %<cr>
+map <leader>bd :bd<cr>
 
 " Working in PHP
 nmap <leader>sfp :set ft=php<cr>
