@@ -2,8 +2,8 @@
 set encoding=utf-8
 let mapleader= ","
 setlocal spell spelllang=en_us
-
-set lcs=eol:⌝,tab:\ \
+        
+set lcs=eol:⌝,tab:▸\  
 set relativenumber
 au BufRead,BufNewFile *.md setlocal textwidth=80
 
@@ -50,16 +50,27 @@ imap <C-s> <ESC>:w <cr>
 nnoremap <leader>sop :source %<cr>
 map <leader>bd :bd<cr>
 
+" Replacements 
+function! ReplaceHighlighted()
+    call inputsave()
+    let replacement = input('Replace highlight with: ')
+    call inputrestore()
+    execute '%s//' . replacement . '/g' 
+endfunction
+
+nmap <leader><leader>r :call ReplaceHighlighted()<cr>
+
+
 " Working in PHP
 nmap <leader>sfp :set ft=php<cr>
 au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
 " Remove problematic tabs
-noremap <leader>fix :normal! magg=G'a <cr>
+nnoremap <leader>fix :normal! magg=G'a <cr>
 
 " Add spaces around equal sign
-noremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
+nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 
 " Custimizations
 :iab <expr> dt strftime("%x")
@@ -104,12 +115,30 @@ let g:Powerline_symbols = 'fancy'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_use_caching = 1
 
-
+" TwitVim"
 " Use .vimrc.local.twitvim if available {
     if filereadable(expand("~/.vimrc.local.twitvim"))
         source ~/.vimrc.local.twitvim
     endif
 " }
+
+
+function! GetTwitVimList(level)
+    if a:level == 'futurequake'
+        execute 'ListTwit futurequake'
+    elseif a:level == 'edc'
+        execute 'ListTwit edc'
+    elseif a:level == 'my-news'
+        execute 'ListTwit my-news'
+    endif
+endfunction
+
+nnoremap <leader>ltfq :call GetTwitVimList('futurequake')<cr>
+nnoremap <leader>ltedc :call GetTwitVimList('edc')<cr>
+nnoremap <leader>ltmn :call GetTwitVimList('my-news')<cr>
+
+
+
 
 " Convert markdown to HTML
 nmap <leader>md :% !~/bin.dropbox/Markdown.pl --html4tags % <cr>
@@ -195,11 +224,12 @@ endfunction
 
 
 command! -register GetFilePath call GetFilePath(<q-reg>)
-nmap <leader>fp :GetFilePath <cr>
+"nnoremap <leader>fp :GetFilePath<cr>
+nnoremap <leader>fpa :normal! GetFilePath a<cr>
 
 " Open link in browser
 function! Browser()
-  let line = getline(".")
+  let line = getline(".")                       
   let gline = matchstr(line, '\(https*://\|www\.\)[^ ,;\t)]*')
   exec '!open /Applications/Google\ Chrome.app '.gline
   "exec '!google-chrome '.line
@@ -225,7 +255,7 @@ command! -register CopyMatches call CopyMatches(<q-reg>)
 
 map <Leader>T:grep -rn "^\##" %<CR>
 
-execute "set colorcolumn=" . join(range(81,335), ',')
-highlight ColorColumn guibg=#073642 guifg=#586e75
-"call matchadd('ColorColumn', '\%81v', 100)
+execute "set colorcolumn=" . join(range(105,335), ',')
+highlight ColorColumn guibg=#073642 guifg=#6f6f6f
+"call matchadd('ColorColumn', '\%95v', 100)
 
