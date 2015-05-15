@@ -13,6 +13,7 @@ let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
 "nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
 nmap <leader>pt :execute "below new /Users/chris/Dropbox/lists/todo.txt"<CR>
 nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
+nnoremap <leader>fs :normal! mm[s1z=`m<cr>
 
 " Open incoming file
 
@@ -49,6 +50,19 @@ nmap <C-s> <ESC>:w <cr>
 imap <C-s> <ESC>:w <cr>
 nnoremap <leader>sop :source %<cr>
 map <leader>bd :bd<cr>
+nnoremap m1 :normal! kmmjdd{p'm<cr>
+nnoremap m2 :normal! kmmjdd{jp'm<cr>
+nnoremap m3 :normal! kmmjdd{jjp'm<cr>
+
+function! GetTableColumns()
+    call inputsave()
+    let db = input('Enter database name: ')
+    let table = input('Enter table name: ')
+    call inputrestore()
+    execute "read !/usr/local/mysql/bin/mysql -u howiecha -p ". db . " -e 'SHOW COLUMNS IN " . table . "' | awk '{print $1}'"
+endfunction
+
+nnoremap <leader><leader>mytc :call GetTableColumns()<cr>
 
 " Replacements 
 function! ReplaceHighlighted()
@@ -67,7 +81,8 @@ au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
 " Remove problematic tabs
-nnoremap <leader>fix :normal! magg=G'a <cr>
+""nnoremap <leader>fix :normal! magg=G`a <cr>
+nnoremap <leader>fix :normal! maggvGgq`a <cr>
 
 " Add spaces around equal sign
 nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
@@ -84,6 +99,8 @@ if has("gui_running")
     set columns=150
 endif
 
+" Custom Dictionaries
+set dict+=~/Dropbox/lists/todo_words
 
 " VimTodo Settings"
 let g:todo_taskurl=""
@@ -255,7 +272,7 @@ command! -register CopyMatches call CopyMatches(<q-reg>)
 
 map <Leader>T:grep -rn "^\##" %<CR>
 
-execute "set colorcolumn=" . join(range(105,335), ',')
+execute "set colorcolumn=" . join(range(110,335), ',')
 highlight ColorColumn guibg=#073642 guifg=#6f6f6f
 "call matchadd('ColorColumn', '\%95v', 100)
 
