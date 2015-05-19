@@ -276,3 +276,8 @@ execute "set colorcolumn=" . join(range(110,335), ',')
 highlight ColorColumn guibg=#073642 guifg=#6f6f6f
 "call matchadd('ColorColumn', '\%95v', 100)
 
+
+" Abbreviations "
+if filereadable(expand("~/.vimrc.local.abbreviations"))
+    source ~/.vimrc.local.twitvim
+endif

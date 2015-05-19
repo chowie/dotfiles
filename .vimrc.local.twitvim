@@ -1,0 +1,9 @@
+" TwitVim configs
+" let twitvim_login       = "chrishowie:Dze9J7we"
+let twitvim_force_ssl = 1
+let twitvim_login = "chrishowie:$M34nt2L1v3"
+let twitvim_browser_cmd='open /Applications/Google\ Chrome.app/'
+let twitvim_bitly_user  = "chrisemaj7"
+let twitvim_bitly_key   = "R_8d856f3cf9e5a4cfa41c53aa0352d0eb"
+
+
