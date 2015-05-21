@@ -80,6 +80,33 @@ nmap <leader>sfp :set ft=php<cr>
 au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
+
+function! TwitVimOptions() 
+    set wrap
+    set linebreak
+    set nolist  " list disables linebreak
+    set formatoptions+=l
+    set showbreak=\ \ \ \ 
+    set textwidth=80
+    set wrapmargin=0
+    resize 15
+endfunction
+
+au FileType twitvim call TwitVimOptions()
+
+function! SetTodoOptions() 
+    set wrap
+    set linebreak
+    set nolist  " list disables linebreak
+    set formatoptions+=l
+    set showbreak=\ \ \ \ 
+    set textwidth=80
+    set wrapmargin=0
+    nmap <leader>d :normal! ^ix <C-R>=strftime('%F')<C-M> <cr>
+endfunction
+
+au FileType todo call SetTodoOptions()
+
 " Remove problematic tabs
 ""nnoremap <leader>fix :normal! magg=G`a <cr>
 nnoremap <leader>fix :normal! maggvGgq`a <cr>
