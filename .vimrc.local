@@ -78,6 +78,8 @@ nmap <leader><leader>r :call ReplaceHighlighted()<cr>
 
 " Working in PHP
 nmap <leader>sfp :set ft=php<cr>
+nmap <leader>phpi :normal! i<?= <ESC>:normal! mmi?><ESC>:normal! `mi <cr>
+
 au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
@@ -163,7 +165,7 @@ function! TwitVimOptions()
     set showbreak=\ \ \ \ 
     set textwidth=80
     set wrapmargin=0
-    resize 15
+    resize 20
 endfunction
 
 au FileType twitvim call TwitVimOptions()
@@ -176,8 +178,6 @@ function! TwitVimProfileTwitter()
 endfunction 
 
 nmap <leader>tvup :call TwitVimProfileTwitter()<cr>
-
-nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
 
 function! GetTwitVimList(level)
     if a:level == 'futurequake'
