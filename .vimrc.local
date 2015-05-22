@@ -14,6 +14,7 @@ let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
 nmap <leader>pt :execute "below new /Users/chris/Dropbox/lists/todo.txt"<CR>
 nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
 nnoremap <leader>fs :normal! mm[s1z=`m<cr>
+imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
 
 " Open incoming file
 
@@ -80,19 +81,6 @@ nmap <leader>sfp :set ft=php<cr>
 au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
-
-function! TwitVimOptions() 
-    set wrap
-    set linebreak
-    set nolist  " list disables linebreak
-    set formatoptions+=l
-    set showbreak=\ \ \ \ 
-    set textwidth=80
-    set wrapmargin=0
-    resize 15
-endfunction
-
-au FileType twitvim call TwitVimOptions()
 
 function! SetTodoOptions() 
     set wrap
@@ -166,6 +154,30 @@ let g:ctrlp_use_caching = 1
     endif
 " }
 
+" Pull results for specified list
+function! TwitVimOptions() 
+    set wrap
+    set linebreak
+    set nolist  " list disables linebreak
+    set formatoptions+=l
+    set showbreak=\ \ \ \ 
+    set textwidth=80
+    set wrapmargin=0
+    resize 15
+endfunction
+
+au FileType twitvim call TwitVimOptions()
+
+" Show profile of user under cursor
+function! TwitVimProfileTwitter()
+    normal! "ayt: 
+    let user = @a
+    execute 'ProfileTwitter ' . user
+endfunction 
+
+nmap <leader>tvup :call TwitVimProfileTwitter()<cr>
+
+nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
 
 function! GetTwitVimList(level)
     if a:level == 'futurequake'
@@ -177,9 +189,11 @@ function! GetTwitVimList(level)
     endif
 endfunction
 
-nnoremap <leader>ltfq :call GetTwitVimList('futurequake')<cr>
-nnoremap <leader>ltedc :call GetTwitVimList('edc')<cr>
-nnoremap <leader>ltmn :call GetTwitVimList('my-news')<cr>
+nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
+nmap <leader>tvedc :call GetTwitVimList('edc')<cr>
+nmap <leader>tvmn :call GetTwitVimList('my-news')<cr>
+nmap <leader>tvr :execute 'RepliesTwitter'<cr>
+nmap <leader>tvp :execute 'ProfileTwitter'<cr>
 
 
 
