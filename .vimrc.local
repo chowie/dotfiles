@@ -120,6 +120,10 @@ if has("gui_running")
     set columns=150
 endif
 
+if has("gui_macvim")
+    set transparency=0
+endif
+
 " Custom Dictionaries
 set dict+=~/Dropbox/lists/todo_words
 
@@ -327,4 +331,4 @@ if filereadable(expand("~/.vimrc.local.abbreviations"))
     source ~/.vimrc.local.twitvim
 endif
 
-colorscheme tomorrow-night
+colorscheme Tomorrow-Night
