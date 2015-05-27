@@ -29,10 +29,6 @@ nnoremap <leader>pi :call OpenProjectIncoming()<cr>
 nnoremap <leader>tb :execute "below new /Users/chris/Documents/code-snippets/vim-classes/beginner.md"<cr>
 nnoremap <leader>td :execute "below new /Users/chris/Dropbox/lists/todo.txt"<cr>
 
-" GitLab
-nmap <leader>lab :execute "!open http://gitlab.msu.edu"<cr>
-
-
 " Markdown headings
 function! UnderlineHeading(level)
     if a:level == 1
