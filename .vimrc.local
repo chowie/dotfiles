@@ -120,10 +120,6 @@ if has("gui_running")
     set columns=150
 endif
 
-if has("gui_macvim")
-    set transparency=0
-endif
-
 " Custom Dictionaries
 set dict+=~/Dropbox/lists/todo_words
 
@@ -146,10 +142,10 @@ let g:todo_state_colors= {
 
 
 
-" PowerLine configs
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"" PowerLine configs
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 let g:Powerline_symbols = 'fancy'
 
 
@@ -331,4 +327,4 @@ if filereadable(expand("~/.vimrc.local.abbreviations"))
     source ~/.vimrc.local.twitvim
 endif
 
-colorscheme Tomorrow-Night
+colorscheme tomorrow-night
