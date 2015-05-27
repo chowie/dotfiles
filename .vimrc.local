@@ -326,3 +326,5 @@ highlight ColorColumn guibg=#073642 guifg=#6f6f6f
 if filereadable(expand("~/.vimrc.local.abbreviations"))
     source ~/.vimrc.local.twitvim
 endif
+
+colorscheme tomorrow-night
