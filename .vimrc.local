@@ -113,6 +113,7 @@ nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 :iab <expr> dts strftime("%c")
 :iab <expr> uts strftime("%x %X (%Z)")
 
+<<<<<<< HEAD
 if has("gui_running")
     set guifont=Consolas\ for\ Powerline\ FixedD:h14
     ""set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ 10
@@ -124,6 +125,8 @@ if has("gui_macvim")
     set transparency=0
 endif
 
+=======
+>>>>>>> ad13cc5b9c920619f40e6f9ddbf54fa46aa7abb7
 " Custom Dictionaries
 set dict+=~/Dropbox/lists/todo_words
 
@@ -144,6 +147,14 @@ let g:todo_state_colors= {
     \'SOMEDAY': 'Grey'
     \}
 
+
+if has("gui_running")
+    set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    "set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h14
+
+    set lines=62
+    set columns=150
+endif
 
 
 "" PowerLine configs
@@ -194,12 +205,15 @@ function! GetTwitVimList(level)
         execute 'ListTwit edc'
     elseif a:level == 'my-news'
         execute 'ListTwit my-news'
+    elseif a:level == 'vim'
+        execute 'ListTwit vim'
     endif
 endfunction
 
 nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
 nmap <leader>tvedc :call GetTwitVimList('edc')<cr>
 nmap <leader>tvmn :call GetTwitVimList('my-news')<cr>
+nmap <leader>tvim :call GetTwitVimList('vim')<cr>
 nmap <leader>tvr :execute 'RepliesTwitter'<cr>
 nmap <leader>tvp :execute 'ProfileTwitter'<cr>
 
@@ -321,8 +335,8 @@ command! -register CopyMatches call CopyMatches(<q-reg>)
 
 map <Leader>T:grep -rn "^\##" %<CR>
 
-execute "set colorcolumn=" . join(range(110,335), ',')
-highlight ColorColumn guibg=#073642 guifg=#6f6f6f
+"execute "set colorcolumn=" . join(range(110,335), ',')
+"highlight ColorColumn guibg=#073642 guifg=#6f6f6f
 "call matchadd('ColorColumn', '\%95v', 100)
 
 
@@ -331,4 +345,4 @@ if filereadable(expand("~/.vimrc.local.abbreviations"))
     source ~/.vimrc.local.twitvim
 endif
 
-colorscheme tomorrow-night
+colorscheme Tomorrow-Night
