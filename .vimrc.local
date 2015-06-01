@@ -31,6 +31,7 @@ nnoremap <leader>td :execute "below new /Users/chris/Dropbox/lists/todo.txt"<cr>
 
 " GitLab
 nmap <leader>lab :execute "!open http://gitlab.msu.edu"<cr>
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 
 " Markdown headings
@@ -113,6 +114,18 @@ nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 :iab <expr> dts strftime("%c")
 :iab <expr> uts strftime("%x %X (%Z)")
 
+if has("gui_running")
+    "set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    "set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
+    set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    set lines=62
+    set columns=150
+endif
+
+if has("gui_macvim")
+    set transparency=0
+endif
+
 " Custom Dictionaries
 set dict+=~/Dropbox/lists/todo_words
 
@@ -134,13 +147,13 @@ let g:todo_state_colors= {
     \}
 
 
-if has("gui_running")
-    set guifont=Consolas\ for\ Powerline\ FixedD:h14
-    "set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h14
+"if has("gui_running")
+    "set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    ""set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h14
 
-    set lines=62
-    set columns=150
-endif
+    "set lines=62
+    "set columns=150
+"endif
 
 
 "" PowerLine configs
