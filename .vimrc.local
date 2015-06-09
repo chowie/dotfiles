@@ -206,6 +206,8 @@ function! GetTwitVimList(level)
         execute 'ListTwit my-news'
     elseif a:level == 'vim'
         execute 'ListTwit vim'
+    elseif a:level == 'web-dev'
+        execute 'ListTwit web-development'
     endif
 endfunction
 
@@ -213,6 +215,7 @@ nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
 nmap <leader>tvedc :call GetTwitVimList('edc')<cr>
 nmap <leader>tvmn :call GetTwitVimList('my-news')<cr>
 nmap <leader>tvim :call GetTwitVimList('vim')<cr>
+nmap <leader>tvwd :call GetTwitVimList('web-dev')<cr>
 nmap <leader>tvr :execute 'RepliesTwitter'<cr>
 nmap <leader>tvp :execute 'ProfileTwitter'<cr>
 
@@ -338,6 +341,10 @@ map <Leader>T:grep -rn "^\##" %<CR>
 "highlight ColorColumn guibg=#073642 guifg=#6f6f6f
 "call matchadd('ColorColumn', '\%95v', 100)
 
+" Calendar 
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+nnoremap <leader>cal :execute "Calendar -view=day"<cr> 
 
 " Abbreviations "
 if filereadable(expand("~/.vimrc.local.abbreviations"))
