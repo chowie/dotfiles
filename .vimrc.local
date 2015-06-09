@@ -19,9 +19,10 @@ imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
 " Open incoming file
 
 function! OpenProjectIncoming()
-    execute "below new /Users/chris/Dropbox/MSU/incoming.md"
-     let tstamp = strftime('c%')
-     echo 'New timestamp: '. tstamp
+    execute "below new ~/Sites/_Work-Docs/inbox.md"
+    normal! Go
+    s/^$/\=strftime("%c")
+    normal! yss]
      "call setline(line('.'), getline('.') . ' ' . myts)
 endfunction
 
@@ -48,6 +49,20 @@ endfunction
 nnoremap <leader>h1 :call UnderlineHeading(1)<cr>
 nnoremap <leader>h2 :call UnderlineHeading(2)<cr>
 nnoremap <leader>h3 :call UnderlineHeading(3)<cr>
+
+function! MakeMarkdownLink() 
+    g/[A-Za-z0-9._%-]\{1,}@[A-Za-z0-9.-]\{1,}\.[A-Za-z]\{2,4}/
+    normal! gn 
+    "normal! mmhxi[]<ESC>P(ewebster@msu.edu)
+    "normal! ,mlhxi[^op](ewebster@msu.edu)
+endfunction 
+
+nnoremap <leader>ml :call MakeMarkdownLink()<cr> 
+" Add 5 spaces to the end of the line.  Mostly used for Markdown  
+nmap <leader><leader>nl :normal! mmA     <C-o>`m<cr>
+     
+"NERDCommenter
+imap <C-c> <plug>NERDCommenterInsert
 
 " Navigation
 nmap <leader>cn :cn <cr>
@@ -215,7 +230,6 @@ nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
 nmap <leader>tvedc :call GetTwitVimList('edc')<cr>
 nmap <leader>tvmn :call GetTwitVimList('my-news')<cr>
 nmap <leader>tvim :call GetTwitVimList('vim')<cr>
-nmap <leader>tvwd :call GetTwitVimList('web-dev')<cr>
 nmap <leader>tvr :execute 'RepliesTwitter'<cr>
 nmap <leader>tvp :execute 'ProfileTwitter'<cr>
 
