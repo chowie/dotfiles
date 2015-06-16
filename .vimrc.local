@@ -26,9 +26,21 @@ function! OpenProjectIncoming()
      "call setline(line('.'), getline('.') . ' ' . myts)
 endfunction
 
+function! FixMysqlEscapeString() 
+    let reqv = matchstr('GET','GET')
+    echo reqv
+endfunction 
+
 nnoremap <leader>pi :call OpenProjectIncoming()<cr>
 nnoremap <leader>tb :execute "below new /Users/chris/Documents/code-snippets/vim-classes/beginner.md"<cr>
 nnoremap <leader>td :execute "below new /Users/chris/Dropbox/lists/todo.txt"<cr>
+
+""nnoremap <leader>fmyx :normal! ysw)<cr> 
+nnoremap <leader><leader>fmyx :normal! v/\]<cr>  
+
+function! FixMysqlEscapeString() 
+    normal! :g/\$_\(GET\|POST\)\[["a-zA-Z0-9_-]*\]
+endfunction 
 
 " GitLab
 nmap <leader>lab :execute "!open http://gitlab.msu.edu"<cr>
@@ -50,17 +62,30 @@ nnoremap <leader>h1 :call UnderlineHeading(1)<cr>
 nnoremap <leader>h2 :call UnderlineHeading(2)<cr>
 nnoremap <leader>h3 :call UnderlineHeading(3)<cr>
 
-function! MakeMarkdownLink() 
+function! MakeMarkdownLink()
     g/[A-Za-z0-9._%-]\{1,}@[A-Za-z0-9.-]\{1,}\.[A-Za-z]\{2,4}/
-    normal! gn 
+    normal! gn
     "normal! mmhxi[]<ESC>P(ewebster@msu.edu)
     "normal! ,mlhxi[^op](ewebster@msu.edu)
+endfunction
+
+function! MakeMarkdownTableHeaders()
+    normal! yyp 
+    execute 's/\w/-/g' 
 endfunction 
 
-nnoremap <leader>ml :call MakeMarkdownLink()<cr> 
-" Add 5 spaces to the end of the line.  Mostly used for Markdown  
+function! MarkdownFormatTable()
+    execute 's/\(\t\|$\|^\)\{1,}/|/g' 
+    execute 'Tabularize /|'
+endfunction 
+
+nnoremap <leader>ht :call MakeMarkdownTableHeaders()<cr> 
+vnoremap <leader>mft :call MarkdownFormatTable()<cr> 
+
+nnoremap <leader>ml :call MakeMarkdownLink()<cr>
+" Add 5 spaces to the end of the line.  Mostly used for Markdown
 nmap <leader><leader>nl :normal! mmA     <C-o>`m<cr>
-     
+
 "NERDCommenter
 imap <C-c> <plug>NERDCommenterInsert
 
@@ -75,22 +100,56 @@ nnoremap m1 :normal! kmmjdd{p'm<cr>
 nnoremap m2 :normal! kmmjdd{jp'm<cr>
 nnoremap m3 :normal! kmmjdd{jjp'm<cr>
 
-function! GetTableColumns()
-    call inputsave()
-    let db = input('Enter database name: ')
-    let table = input('Enter table name: ')
-    call inputrestore()
-    execute "read !/usr/local/mysql/bin/mysql -u howiecha -p ". db . " -e 'SHOW COLUMNS IN " . table . "' | awk '{print $1}'"
+" Use mysql.vim conf file if available {
+    if filereadable(expand("~/.config/mysql.vim"))
+        source ~/.config/mysql.vim
+    endif
+" }
+
+function! RunMysqlDatabaseQuery()
+    let l:sql = join(getline("'<","'>"),'<bar>')
+    "echo l:sql 
+    "let l:mystate = "mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e '" . l:sql . "'"
+    
+    "s/^$/\=execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e '" . l:sql . "'"
+    " use a temp file for result
+    let s:tmpfile = tempname()
+
+    " single line copy of query followed by blank line
+    "echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")).
+    echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")).
+    \ ' > '.s:tmpfile)
+    echo system('echo >> '.s:tmpfile)
+    " pipe through mysql into temp file
+    echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " ' . l:sql  . '" >> ' . s:tmpfile)
+    " and open in new buffer
+    exec 'below new '.s:tmpfile
 endfunction
 
+function! GetTableColumns()
+    "call inputsave()
+    "let l:db = input('Enter database name: ')
+    "let l:table = input('Enter table name: ')
+    "call inputrestore()
+    let l:table= join(getline("'<","'>"),'<bar>')
+    "execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e 'SHOW COLUMNS IN " . l:table . "' | awk '{print $1}'"
+    let s:tmpfile = tempname()
+    echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " SHOW COLUMNS IN ' . l:table . '" | ' . " awk '{print $1}' >> " . s:tmpfile)
+    exec 'below new '.s:tmpfile
+    "execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " -e 'SHOW COLUMNS IN " . l:table . "' | awk '{print $1}'"
+endfunction
+"clear_workshops.applicants
+"clear_workshops.users
 nnoremap <leader><leader>mytc :call GetTableColumns()<cr>
+vnoremap <leader><leader>mytc :call GetTableColumns()<cr>
+vnoremap <Leader><leader>myq :call RunMysqlDatabaseQuery()<cr> 
 
-" Replacements 
+" Replacements
 function! ReplaceHighlighted()
     call inputsave()
     let replacement = input('Replace highlight with: ')
     call inputrestore()
-    execute '%s//' . replacement . '/g' 
+    execute '%s//' . replacement . '/g'
 endfunction
 
 nmap <leader><leader>r :call ReplaceHighlighted()<cr>
@@ -104,7 +163,7 @@ au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
 
 
-function! SetTodoOptions() 
+function! SetTodoOptions()
     set wrap
     set linebreak
     set nolist  " list disables linebreak
@@ -332,6 +391,9 @@ function! Browser()
 endfunction
 
 map <leader>o :call Browser()<CR>
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 " Tabularize Settings
 nmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
