@@ -15,6 +15,7 @@ nmap <leader>pt :execute "below new /Users/chris/Dropbox/lists/todo.txt"<CR>
 nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
 nnoremap <leader>fs :normal! mm[s1z=`m<cr>
 imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
+inoremap \fp <C-R>=getcwd()<CR>
 
 " Open incoming file
 
@@ -75,12 +76,12 @@ function! MakeMarkdownTableHeaders()
 endfunction 
 
 function! MarkdownFormatTable()
-    execute 's/\(\t\|$\|^\)\{1,}/|/g' 
+    execute 's/\(\t\|$\|^\)\{1,}/ | /g' 
     execute 'Tabularize /|'
 endfunction 
 
 nnoremap <leader>ht :call MakeMarkdownTableHeaders()<cr> 
-vnoremap <leader>mft :call MarkdownFormatTable()<cr> 
+nnoremap <leader>mft :call MarkdownFormatTable()<cr> 
 
 nnoremap <leader>ml :call MakeMarkdownLink()<cr>
 " Add 5 spaces to the end of the line.  Mostly used for Markdown
@@ -107,23 +108,29 @@ nnoremap m3 :normal! kmmjdd{jjp'm<cr>
 " }
 
 function! RunMysqlDatabaseQuery()
+
     let l:sql = join(getline("'<","'>"),'<bar>')
     "echo l:sql 
-    "let l:mystate = "mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e '" . l:sql . "'"
-    
+    let l:mystate = 'mysql -u ' . g:mysql_vim_username . ' --password='. g:mysql_vim_password . '  -e "' . l:sql . '"'
+    "echo l:mystate 
     "s/^$/\=execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e '" . l:sql . "'"
     " use a temp file for result
     let s:tmpfile = tempname()
 
     " single line copy of query followed by blank line
     "echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")).
-    echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")).
-    \ ' > '.s:tmpfile)
-    echo system('echo >> '.s:tmpfile)
+    echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")) . ' > '.s:tmpfile)
+    "echo system('echo >> '.s:tmpfile)
+"select * from clear_workshops.users;
+show columns in clear_workshops.users;
     " pipe through mysql into temp file
     echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " ' . l:sql  . '" >> ' . s:tmpfile)
+    let rcomm = 'ssh howiecha@clear.msu.edu "mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e" ' . l:sql 
+    echo system('echo "' . rcomm . '" >> ' . s:tmpfile)
+    "echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " ' . l:sql  . '" >> ' . s:tmpfile)
     " and open in new buffer
     exec 'below new '.s:tmpfile
+
 endfunction
 
 function! GetTableColumns()
@@ -138,8 +145,7 @@ function! GetTableColumns()
     exec 'below new '.s:tmpfile
     "execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " -e 'SHOW COLUMNS IN " . l:table . "' | awk '{print $1}'"
 endfunction
-"clear_workshops.applicants
-"clear_workshops.users
+
 nnoremap <leader><leader>mytc :call GetTableColumns()<cr>
 vnoremap <leader><leader>mytc :call GetTableColumns()<cr>
 vnoremap <Leader><leader>myq :call RunMysqlDatabaseQuery()<cr> 
@@ -392,12 +398,8 @@ endfunction
 
 map <leader>o :call Browser()<CR>
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 " Tabularize Settings
 nmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
-vmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
 nmap <Leader>acom :Tabularize /\/\/ <CR>
 vmap <Leader>acom :Tabularize /\/\/ <CR>
 nmap <Leader>a:: :Tabularize /^[^:]*\zs\:/r1c1l1<CR>
