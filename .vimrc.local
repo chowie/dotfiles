@@ -190,8 +190,8 @@ nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 
 if has("gui_running")
     "set guifont=Consolas\ for\ Powerline\ FixedD:h14
-    "set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
-    set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
+    "set guifont=Consolas\ for\ Powerline\ FixedD:h14
     set lines=62
     set columns=150
 endif
