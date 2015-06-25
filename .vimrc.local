@@ -56,6 +56,7 @@ function! FixMysqlEscapeString()
     echo reqv
 endfunction 
 
+nnoremap <leader>pr :call OpenProjectFile()<cr>
 nnoremap <leader>pi :call OpenProjectIncoming()<cr>
 nnoremap <leader>tb :execute "below new /Users/chris/Documents/code-snippets/vim-classes/beginner.md"<cr>
 nnoremap <leader>td :execute "below new /Users/chris/Dropbox/lists/todo.txt"<cr>
