@@ -3,9 +3,18 @@ set encoding=utf-8
 let mapleader= ","
 setlocal spell spelllang=en_us
         
+au BufRead,BufNewFile *.ctp setfiletype php
+au BufRead,BufNewFile *.ctp set filetype=php
+
 set lcs=eol:⌝,tab:▸\  
 set relativenumber
 au BufRead,BufNewFile *.md setlocal textwidth=80
+"vnoremap au :<C-U>silent! normal! []z<CR>
+noremap au :/https\{0,1}:\/\/[^\b ]*<CR> 
+
+autocmd FileType php let b:surround_45 = "<?php \r ?>"
+autocmd FileType php let b:surround_45 = "<?php \r ?>"
+
 
 " My Project settings"
 "======================
@@ -17,8 +26,23 @@ nnoremap <leader>fs :normal! mm[s1z=`m<cr>
 imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
 inoremap \fp <C-R>=getcwd()<CR>
 
-" Open incoming file
 
+" Project files 
+
+function! OpenProjectFile()
+
+    let l:proot = substitute(system('git rev-parse --show-toplevel'),'\n$','','')
+    let l:filePath = l:proot . "/README.md"  
+    
+    if !filereadable(l:filePath) 
+        autocmd BufNewFile * :write
+    endif
+
+    execute "below new " . l:filePath 
+
+endfunction 
+
+" Open incoming file
 function! OpenProjectIncoming()
     execute "below new ~/Sites/_Work-Docs/inbox.md"
     normal! Go
@@ -27,7 +51,7 @@ function! OpenProjectIncoming()
      "call setline(line('.'), getline('.') . ' ' . myts)
 endfunction
 
-function! FixMysqlEscapeString() 
+function! FixMysqlEscapeString()
     let reqv = matchstr('GET','GET')
     echo reqv
 endfunction 
@@ -164,9 +188,6 @@ nmap <leader><leader>r :call ReplaceHighlighted()<cr>
 " Working in PHP
 nmap <leader>sfp :set ft=php<cr>
 nmap <leader>phpi :normal! i<?= <ESC>:normal! mmi?><ESC>:normal! `mi <cr>
-
-au BufRead,BufNewFile *.ctp setfiletype php
-au BufRead,BufNewFile *.ctp set filetype=php
 
 
 function! SetTodoOptions()
