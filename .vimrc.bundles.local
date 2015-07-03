@@ -10,4 +10,8 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'powerline/fonts'
 Bundle 'itchyny/calendar.vim'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'rhysd/committia.vim'
+Bundle 'Wutzara/vim-materialtheme'
+Bundle 'znake/znake-vim'
 "Bundle 'tobyS/pdv'
+

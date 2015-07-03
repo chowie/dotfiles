@@ -13,7 +13,7 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 noremap au :/https\{0,1}:\/\/[^\b ]*<CR> 
 
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
-autocmd FileType php let b:surround_45 = "<?php \r ?>"
+autocmd FileType php let b:surround_61 = "<?= \r ?>"
 
 
 " My Project settings"
@@ -25,7 +25,8 @@ nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
 nnoremap <leader>fs :normal! mm[s1z=`m<cr>
 imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
 inoremap \fp <C-R>=getcwd()<CR>
-
+:iab <expr> php- <?php <C-O>mm ?><C-O>`m
+:iab <expr> php= <?= <C-O>mm ?><C-O>`m
 
 " Project files 
 
@@ -190,6 +191,17 @@ nmap <leader><leader>r :call ReplaceHighlighted()<cr>
 nmap <leader>sfp :set ft=php<cr>
 nmap <leader>phpi :normal! i<?= <ESC>:normal! mmi?><ESC>:normal! `mi <cr>
 
+" Split array arguments into multiple lines and fix indenting 
+function! ArrayArgsToLines() 
+    normal! [(m`vi)"ad
+    execute "normal! i\r\r"
+    execute "normal! k\"ap"
+    execute "normal! f(vi)"
+    execute 's/,/,\r/g'
+    execute "normal! va)="
+endfunction 
+
+nmap <leader>psa :call ArrayArgsToLines()<cr> 
 
 function! SetTodoOptions()
     set wrap
