@@ -25,8 +25,8 @@ nnoremap <leader>sdt :normal! i<C-r>=strftime("%c")<CR><CR>
 nnoremap <leader>fs :normal! mm[s1z=`m<cr>
 imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
 inoremap \fp <C-R>=getcwd()<CR>
-:iab <expr> php- <?php <C-O>mm ?><C-O>`m
-:iab <expr> php= <?= <C-O>mm ?><C-O>`m
+:iab php- <?php <C-O>mm ?><C-O>`m
+:iab php= <?= <C-O>mm ?><C-O>`m
 
 " Project files 
 
@@ -433,7 +433,8 @@ endfunction
 map <leader>o :call Browser()<CR>
 
 " Tabularize Settings
-nmap <Leader>a= :Tabularize /[.+-]*=[>]* <CR>
+nnoremap <Leader>a= :Tabularize /[.+-]*=[>]*<CR>
+vnoremap <Leader>a= :Tabularize /[.+-]*=[>]*<CR>
 nmap <Leader>acom :Tabularize /\/\/ <CR>
 vmap <Leader>acom :Tabularize /\/\/ <CR>
 nmap <Leader>a:: :Tabularize /^[^:]*\zs\:/r1c1l1<CR>
