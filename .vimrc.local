@@ -11,6 +11,8 @@ set relativenumber
 au BufRead,BufNewFile *.md setlocal textwidth=80
 "vnoremap au :<C-U>silent! normal! []z<CR>
 noremap au :/https\{0,1}:\/\/[^\b ]*<CR> 
+nnoremap ; :
+vnoremap ; :
 
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
 autocmd FileType php let b:surround_61 = "<?= \r ?>"
@@ -230,8 +232,8 @@ nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 
 if has("gui_running")
     "set guifont=Consolas\ for\ Powerline\ FixedD:h14
-    set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
-    "set guifont=Consolas\ for\ Powerline\ FixedD:h14
+    "set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
+    set guifont=Consolas\ for\ Powerline\ FixedD:h12
     set lines=62
     set columns=150
 endif
@@ -450,9 +452,9 @@ command! -register CopyMatches call CopyMatches(<q-reg>)
 
 map <Leader>T:grep -rn "^\##" %<CR>
 
-"execute "set colorcolumn=" . join(range(110,335), ',')
-"highlight ColorColumn guibg=#073642 guifg=#6f6f6f
-"call matchadd('ColorColumn', '\%95v', 100)
+execute "set colorcolumn=" . join(range(120,335), ',')
+highlight ColorColumn guibg=#073642 guifg=#6f6f6f
+call matchadd('ColorColumn', '\%95v', 120)
 
 " Calendar 
 let g:calendar_google_calendar = 1
