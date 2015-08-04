@@ -1,3 +1,4 @@
+UnBundle 'scrooloose/nerdtree'
 Bundle 'mivok/vimtodo'
 Bundle 'TwitVim'
 Bundle 'freitass/todo.txt-vim'
@@ -13,5 +14,6 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'rhysd/committia.vim'
 Bundle 'Wutzara/vim-materialtheme'
 Bundle 'znake/znake-vim'
+Bundle 'tpope/vim-vinegar'
 "Bundle 'tobyS/pdv'
 
