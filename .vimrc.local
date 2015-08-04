@@ -239,6 +239,8 @@ if has("gui_running")
 endif
 
 if has("gui_macvim")
+    "set guifont=Ubuntu\ Mono\ Plus\ Nerd\ File\ Types\ Mono:h14 
+    set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h12
     set transparency=0
 endif
 
@@ -263,14 +265,6 @@ let g:todo_state_colors= {
     \}
 
 
-"if has("gui_running")
-    "set guifont=Consolas\ for\ Powerline\ FixedD:h14
-    ""set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h14
-
-    "set lines=62
-    "set columns=150
-"endif
-
 
 "" PowerLine configs
 "set statusline+=%#warningmsg#
@@ -278,6 +272,13 @@ let g:todo_state_colors= {
 "set statusline+=%*
 let g:Powerline_symbols = 'fancy'
 
+" Airline config 
+"let g:airline_section_b = '%{strftime("%c")}'
+let g:airline_section_y = 'BN: %{bufnr("%")}'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'tomorrow'
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " CtrlP Settings
 let g:ctrlp_working_path_mode = 'ra'
@@ -467,3 +468,6 @@ if filereadable(expand("~/.vimrc.local.abbreviations"))
 endif
 
 colorscheme Tomorrow-Night
+
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] = 'ƛ'
