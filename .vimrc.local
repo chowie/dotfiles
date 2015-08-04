@@ -452,9 +452,9 @@ command! -register CopyMatches call CopyMatches(<q-reg>)
 
 map <Leader>T:grep -rn "^\##" %<CR>
 
-execute "set colorcolumn=" . join(range(120,335), ',')
-highlight ColorColumn guibg=#073642 guifg=#6f6f6f
-call matchadd('ColorColumn', '\%95v', 120)
+"execute "set colorcolumn=" . join(range(150,335), ',')
+"highlight ColorColumn guibg=#073642 guifg=#6f6f6f
+"call matchadd('ColorColumn', '\%95v', 150)
 
 " Calendar 
 let g:calendar_google_calendar = 1
