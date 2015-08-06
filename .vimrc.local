@@ -16,6 +16,7 @@ vnoremap ; :
 
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
 autocmd FileType php let b:surround_61 = "<?= \r ?>"
+autocmd FileType json :call JsonFormatter() 
 
 
 " My Project settings"
@@ -118,7 +119,7 @@ nmap <leader><leader>nl :normal! mmA     <C-o>`m<cr>
 "NERDCommenter
 imap <C-c> <plug>NERDCommenterInsert
 
-" Navigation
+" Navigatio
 nmap <leader>cn :cn <cr>
 nmap <leader>cp :cp <cr>
 nmap <C-s> <ESC>:w <cr>
@@ -128,6 +129,10 @@ map <leader>bd :bd<cr>
 nnoremap m1 :normal! kmmjdd{p'm<cr>
 nnoremap m2 :normal! kmmjdd{jp'm<cr>
 nnoremap m3 :normal! kmmjdd{jjp'm<cr>
+nnoremap <leader>bf :bfirst<cr>
+nnoremap <leader>bl :blast<cr>
+nnoremap <leader>bn :bnext<cr>
+nnoremap <leader>bp :bprev<cr>
 
 " Use mysql.vim conf file if available {
     if filereadable(expand("~/.config/mysql.vim"))
@@ -270,11 +275,11 @@ let g:todo_state_colors= {
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
-let g:Powerline_symbols = 'fancy'
+"let g:Powerline_symbols = 'fancy'
 
 " Airline config 
 "let g:airline_section_b = '%{strftime("%c")}'
-let g:airline_section_y = 'BN: %{bufnr("%")}'
+"let g:airline_section_y = 'BN: %{bufnr("%")}'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'tomorrow'
 "let g:airline#extensions#tabline#left_sep = ' '
@@ -283,6 +288,7 @@ let g:airline_theme = 'tomorrow'
 " CtrlP Settings
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_use_caching = 1
+let g:ctrlp_root_markers = ['.git','.root','.riaapp']
 
 " TwitVim"
 " Use .vimrc.local.twitvim if available {
@@ -340,10 +346,6 @@ nmap <leader>tvp :execute 'ProfileTwitter'<cr>
 
 " Convert markdown to HTML
 nmap <leader>md :% !~/bin.dropbox/Markdown.pl --html4tags % <cr>
-
-" CtrlP "
-let g:ctrlp_root_markers = ['.git','.root','.riaapp']
-
 
 " Escape/unescape & < > HTML entities in range (default current line).
 function! HtmlEntities(line1, line2, action)
@@ -469,5 +471,9 @@ endif
 
 colorscheme Tomorrow-Night
 
+" vim-scripts/sessionman configs 
+nnoremap <leader>ss :execute 'SessionSave'<cr>
+nnoremap <leader>sc :execute 'SessionClose'<cr>
+
 "let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
-"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
