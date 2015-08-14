@@ -133,6 +133,7 @@ nnoremap <leader>bf :bfirst<cr>
 nnoremap <leader>bl :blast<cr>
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bp :bprev<cr>
+inoremap <C-Y> <Esc>klyiwjPa
 
 " Use mysql.vim conf file if available {
     if filereadable(expand("~/.config/mysql.vim"))
@@ -472,8 +473,8 @@ endif
 colorscheme Tomorrow-Night
 
 " vim-scripts/sessionman configs 
-nnoremap <leader>ss :execute 'SessionSave'<cr>
-nnoremap <leader>sc :execute 'SessionClose'<cr>
+nnoremap <Leader>ss :execute 'SessionSave'<cr>
+nnoremap <Leader>sc :execute 'SessionClose'<cr>
 
 "let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
