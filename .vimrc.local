@@ -478,3 +478,6 @@ nnoremap <Leader>sc :execute 'SessionClose'<cr>
 
 "let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
+
+" Toggle Tagbar 
+nnoremap <Leader>T :execute 'TagbarToggle'<cr> 
