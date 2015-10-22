@@ -133,6 +133,7 @@ nnoremap <leader>bf :bfirst<cr>
 nnoremap <leader>bl :blast<cr>
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bp :bprev<cr>
+inoremap <C-Y> <Esc>klyiwjPa
 
 " Use mysql.vim conf file if available {
     if filereadable(expand("~/.config/mysql.vim"))
@@ -236,11 +237,14 @@ nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
 :iab <expr> uts strftime("%x %X (%Z)")
 
 if has("gui_running")
+    colorscheme Tomorrow-Night
     "set guifont=Consolas\ for\ Powerline\ FixedD:h14
     "set guifont=Ubuntu\ Mono\ for\ Powerline:h14 
     set guifont=Consolas\ for\ Powerline\ FixedD:h12
     set lines=62
     set columns=150
+else
+    colorscheme solarized
 endif
 
 if has("gui_macvim")
@@ -469,11 +473,23 @@ if filereadable(expand("~/.vimrc.local.abbreviations"))
     source ~/.vimrc.local.abbreviations
 endif
 
-colorscheme Tomorrow-Night
+"colorscheme Tomorrow-Night
 
 " vim-scripts/sessionman configs 
-nnoremap <leader>ss :execute 'SessionSave'<cr>
-nnoremap <leader>sc :execute 'SessionClose'<cr>
+nnoremap <Leader>ss :execute 'SessionSave'<cr>
+nnoremap <Leader>sc :execute 'SessionClose'<cr>
 
 "let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
+
+" Toggle Tagbar 
+nnoremap <Leader>T :execute 'TagbarToggle'<cr> 
+
+" Geeknote
+noremap <F8> :Geeknote<cr> 
+let g:GeeknoteFormat="markdown" 
+let g:GeeknoteNotebookFilters=
+            \[
+            \   'Todo'
+            \]
+

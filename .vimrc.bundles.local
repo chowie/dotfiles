@@ -17,5 +17,6 @@ Bundle 'ryanoasis/nerd-fonts'
 Bundle 'ryanoasis/font-nerd-icons'
 Bundle 'ryanoasis/vim-webdevicons'
 Bundle 'XadillaX/json-formatter.vim'
+Bundle 'lambdalisue/vim-manpager'
 
 
