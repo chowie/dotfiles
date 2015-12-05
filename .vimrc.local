@@ -481,7 +481,7 @@ nnoremap <leader>cal :execute "Calendar -view=day"<cr>
 
 " Abbreviations "
 if filereadable(expand("~/.vimrc.local.abbreviations"))
-    source ~/.vimrc.local.twitvim
+    source ~/.vimrc.local.abbreviations
 endif
 
 "colorscheme Tomorrow-Night
