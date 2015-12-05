@@ -1,18 +1,8 @@
-#set imap_user = "chrisemaj7@gmail.com"
-#set imap_pass = "dzlycadcetbxusdm"
-#set smtp_url = "smtp://chrisemaj7@smtp.gmail.com:587/"
-#set smtp_pass = "dzlycadcetbxusdm"
-set from = "howiecha@msu.edu"
-set realname = "Christopher Howie"
+set from = ""
+set realname = ""
 
 my_hdr Company: Michigan State University, Center for Language Education and Research
 my_hdr X-URL: http://clear.msu.edu
-
-#set folder = "imaps://imap.gmail.com:993"
-#set spoolfile = "+INBOX"
-#set postponed = "+[Gmail]/Drafts"
-#set move = no
-#set editor = 'mvim -f'
 
 bind editor <space> noop
 set alias_file        = '~/.mutt/aliases.txt'
@@ -23,8 +13,8 @@ set editor            = "vim +/^$ ++1"
 set folder            = "imaps://imap.gmail.com/"
 set hostname          = "gmail.com"
 set imap_check_subscribed
-set imap_pass         = "dzlycadcetbxusdm"
-set imap_user         = "chrisemaj7@gmail.com"
+set imap_pass         = ""
+set imap_user         = ""
 set mail_check        = 5
 set move              = no
 set postponed         = "+[Gmail]/Drafts"
