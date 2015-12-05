@@ -3,8 +3,18 @@ set encoding=utf-8
 let mapleader= ","
 setlocal spell spelllang=en_us
         
+" PHP stuff
 au BufRead,BufNewFile *.ctp setfiletype php
 au BufRead,BufNewFile *.ctp set filetype=php
+
+" mutt stuff
+au BufRead /tmp/mutt-* set tw=72
+
+" JavaScript Stuff
+au BufRead,BufNewFile *.js setfiletype javascript
+au BufRead,BufNewFile *.js set filetype=javascript
+
+
 
 set lcs=eol:⌝,tab:▸\  
 set relativenumber
@@ -111,6 +121,7 @@ endfunction
 
 nnoremap <leader>ht :call MakeMarkdownTableHeaders()<cr> 
 nnoremap <leader>mft :call MarkdownFormatTable()<cr> 
+vnoremap <leader>mft :call MarkdownFormatTable()<cr> 
 
 nnoremap <leader>ml :call MakeMarkdownLink()<cr>
 " Add 5 spaces to the end of the line.  Mostly used for Markdown
@@ -479,7 +490,7 @@ endif
 nnoremap <Leader>ss :execute 'SessionSave'<cr>
 nnoremap <Leader>sc :execute 'SessionClose'<cr>
 
-"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
 
 " Toggle Tagbar 
