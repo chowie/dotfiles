@@ -14,7 +14,13 @@ au BufRead /tmp/mutt-* set tw=72
 au BufRead,BufNewFile *.js setfiletype javascript
 au BufRead,BufNewFile *.js set filetype=javascript
 
+"
+" Open incoming file
+function! ChangeArrayToObject()
+    s/\$\([^\[]*\)\[[\"']\([^'\"]*\)[\"']\]/\$\1->\2/g
+endfunction
 
+nnoremap <leader>to :call ChangeArrayToObject()<cr>
 
 set lcs=eol:⌝,tab:▸\  
 set relativenumber
@@ -27,6 +33,11 @@ vnoremap ; :
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
 autocmd FileType php let b:surround_61 = "<?= \r ?>"
 autocmd FileType json :call JsonFormatter() 
+
+" Neocomplcache
+if filereadable(expand("~/.vimrc.neocomplcache.local"))
+    source ~/.vimrc.neocomplcache.local
+endif
 
 
 " My Project settings"
