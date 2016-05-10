@@ -1,0 +1,15 @@
+#!/bin/bash 
+# User Defined Functions
+
+function pandoc2md() {
+
+    SOURCE_FILE=$@
+
+    fullname=$(basename "$2")
+    extension="${fullname##*.}"
+    NEW_NAME="${SOURCE_FILE%.*}"
+
+    echo $NEW_NAME 
+
+}
+
