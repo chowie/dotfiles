@@ -35,9 +35,9 @@ autocmd FileType php let b:surround_61 = "<?= \r ?>"
 autocmd FileType json :call JsonFormatter() 
 
 " Neocomplcache
-if filereadable(expand("~/.vimrc.neocomplcache.local"))
-    source ~/.vimrc.neocomplcache.local
-endif
+"if filereadable(expand("~/.vimrc.neocomplcache.local"))
+    "source ~/.vimrc.neocomplcache.local
+"endif
 
 
 " My Project settings"
