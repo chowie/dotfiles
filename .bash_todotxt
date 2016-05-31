@@ -1,7 +1,7 @@
 # Todo.txt
-export TODOTXT_APP_PATH="${HOME}/bin.dropbox/todo.sh"
-export TODOTXT_CFG_PATH="${HOME}/bin.dropbox/todo.cfg"
-export TODOTXT_COMPLETIONS="${HOME}/bin.dropbox/todo_completion"
+export TODOTXT_APP_PATH="/usr/local/bin/todo.sh"
+export TODOTXT_CFG_PATH="${HOME}/.conf/todo.cfg"
+export TODOTXT_COMPLETIONS="/etc/bash_completion.d/todo"
 export TODOTXT_DEFAULT_ACTION=ls
 export TODOTXT_SORT_COMMAND='env LC_COLLATE=C sort -k 2,2 -k 1,1n'
 
@@ -24,4 +24,5 @@ export -f proj
 complete -F _todo inbox
 complete -F _todo logtime
 complete -f _todo proj 
+
 
