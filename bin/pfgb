@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#podfox=/usr/bin/podfox
+#echo $PATH
+
+GB_PODCAST_DIR=${HOME}/Podcasts/glenn-beck
+
+podfox update glenn-beck
+
+cd "${GB_PODCAST_DIR}"
+
+#grep -o -E '"url":[^"]*"[^"]*"' feed.json  | head -n 1 | awk -F'":[^"]*"|"$' '{print $2}' | xargs -I{} wget --content-disposition {}
+grep -o -E '"url":[^"]*"http://omnystudio.com[^"]*"' feed.json  | head -n 1 | awk -F'":[^"]*"|"$' '{print $2}' | xargs -I{} wget --content-disposition {}
+
+for file in `ls *"?"* `;
+do
+    newfile=$(echo "$file" | cut -d"?" -f1)
+    mv -v $file $newfile
+
+done
+
+cd

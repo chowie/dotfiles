@@ -1,0 +1,10 @@
+* text=auto
+*.png                   binary
+*.jpg                   binary
+*.gif                   binary
+gtm                     binary
+.editorconfig           export-ignore
+.gitignore              export-ignore
+.gitattributes          export-ignore
+
+

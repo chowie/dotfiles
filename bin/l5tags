@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ctags -R -n --exclude=.git --exclude=node_modules --exclude=public --exclude=vendor

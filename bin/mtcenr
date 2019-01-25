@@ -1,0 +1,30 @@
+#!/bin/bash
+
+APP='cenr'
+DATE=`date +%Y-%m-%d`
+LOGFILE="cenr_laravel-${DATE}.log"
+REMOTE_DIR=/usr/local2/applogs/laravel
+LOCAL_DIR=/var/www/${APP}/app/storage/logs
+LOGLEVELS_TOP='ERROR'
+LOGLEVELS_BOTTOM='DEBUG|LOGIN|NOTICE|WARNING'
+
+if [ "$1" == "local" ]
+then
+    FULL_LOGFILE="${LOCAL_DIR}/${LOGFILE}"
+else
+    FULL_LOGFILE="${REMOTE_DIR}/${LOGFILE}"
+fi
+
+if [ "$1" == "local" ]
+then
+    multitail \
+        -cS php -e ${LOGLEVELS_TOP} -l "tail -f -n 30 ${FULL_LOGFILE}" \
+        -cS php -e ${LOGLEVELS_BOTTOM} -l "tail -f -n 30 ${FULL_LOGFILE}"
+else
+    multitail \
+        -cS php -e ${LOGLEVELS_TOP} -l "ssh boedevphplx 'tail -f -n 30 ${FULL_LOGFILE}'" \
+        -cS php -e ${LOGLEVELS_BOTTOM} -l "ssh boedevphplx 'tail -f -n 30 ${FULL_LOGFILE}'"
+fi
+
+
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+SOURCE_FILE=$1
+
+fullname=$(basename "$1")
+extension="${fullname##*.}"
+NEW_NAME="${fullname%.*}"
+
+echo $SOURCE_FILE
+echo $NEW_NAME
+
+## Standard MP4 H.264 AAC
+#ffmpeg -i "$1" -strict experimental -vcodec libx264 -pix_fmt yuv420p -profile:v baseline -preset slower -crf 18 -vf "scale=trunc(in_w/2)*2:trunc(in_h/2)*2" "$NEW_NAME".mp4
+
+## WebM
+#ffmpeg -i "$1" -c:v libvpx -c:a libvorbis -pix_fmt yuv420p -quality good -b:v 2M -crf 5 -vf "scale=trunc(in_w/2)*2:trunc(in_h/2)*2" "$NEW_NAME".webm
+
+## Make Theora Vorbis video file
+ffmpeg -i "$1" -q 5 -pix_fmt yuv420p -acodec libvorbis -q:a 5 -vcodec libtheora -q:v 7 "$NEW_NAME".ogv
+
+
+

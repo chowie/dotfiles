@@ -1,0 +1,18 @@
+#!/bin/bash
+DATE=`date +%Y-%m-%d`
+LOGFILE="elobby-pass-${DATE}.log"
+REMOTE_DIR=/usr/local/apache2/htdocs/apps/elobby-pass/storage/logs
+
+if [ "$1" == "local" ]
+then
+    multitail \
+        -cS php -e 'INFO' -l "tail -f -n 30 /var/www/elobby-pass/storage/logs/${LOGFILE}" \
+        -cS php -e 'DEBUG|LOGIN|NOTICE|ERROR|WARNING' -l "tail -f -n 30 /var/www/elobby-pass/storage/logs/${LOGFILE}"
+else
+    multitail \
+        -cS php -e 'INFO' -l "ssh boedevphplx 'tail -f -n 30 ${REMOTE_DIR}/${LOGFILE}'" \
+        -cS php -e 'DEBUG|LOGIN|NOTICE|ERROR|WARNING' -l "ssh boedevphplx 'tail -f -n 30 ${REMOTE_DIR}/${LOGFILE}'"
+fi
+
+
+

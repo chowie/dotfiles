@@ -1,0 +1,11 @@
+snippet component
+options word indent
+    @component('${1:TARGET}')
+        ${0}
+    @endcomponent
+
+snippet slot
+options word indent
+    @slot('${1}')
+        ${2:TARGET}${0}
+    @endslot

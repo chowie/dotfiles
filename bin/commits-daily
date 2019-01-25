@@ -1,0 +1,14 @@
+#!/bin/bash
+
+GIT_DIRS=(/var/www/midisclose.com/boeauth /var/www/midisclose.com/candidate-demo.wiki /home/howiecha/Documents)
+
+for dir in ${GIT_DIRS[@]}; 
+do
+    cd $dir
+    pwd
+    printf "%40s\n" | tr " " "-"
+    git log --since=yesterday
+    printf "\n";
+done
+
+exit 0

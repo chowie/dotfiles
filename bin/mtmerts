@@ -1,0 +1,19 @@
+#!/bin/bash
+DATE=`date +%Y-%m-%d`
+LOGFILE="merts-software-download-${DATE}.log"
+REMOTE_DIR=/usr/local/applogs/laravel
+LOCAL_DIR=/var/www/merts-software-l54b/storage/logs
+
+if [ "$1" == "local" ]
+then
+    FULL_LOGFILE="${LOCAL_DIR}/${LOGFILE}"
+else
+    FULL_LOGFILE="${REMOTE_DIR}/${LOGFILE}"
+fi
+
+    multitail \
+        -cS php -e 'INFO' -l "tail -f -n 30 ${FULL_LOGFILE}" \
+        -cS php -e 'DEBUG|LOGIN|NOTICE|ERROR|WARNING' -l "tail -f -n 30 ${FULL_LOGFILE}"
+
+
+

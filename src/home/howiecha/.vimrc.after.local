@@ -1,0 +1,16 @@
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+"au BufRead,BufNewFile *.md setlocal textwidth=80
+autocmd FileType markdown nmap <buffer> <leader><leader>int :normal!i- [ ] <cr>
+
+function! SetMarkdownOptions()
+    set wrap
+    set linebreak
+    set formatoptions+=l
+    set textwidth=80
+    set wrapmargin=0
+    echo "I'm a markdown file"
+endfunction
+
+au FileType markdown call SetMarkdownOptions()
+
+setlocal formatoptions+=tcqln

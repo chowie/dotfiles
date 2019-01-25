@@ -1,0 +1,56 @@
+#!/bin/bash
+# Project Links
+
+PROJLINKS_FILE="${TODO_DIR}/project-links.txt"
+
+ITEM=false
+TASK="copy"
+if [ x"$1" = x"projlink" ]; then
+
+    [[ -z $2 ]] && echo "Error: Item number not found" && exit 0
+   
+    [ "$2" = "usage" ] && {
+        echo
+        echo "  Select an item and start counting the time you work on it"
+        echo "  usage:"
+        echo "      todo.sh projlink #ITEM"
+        echo "      todo.sh projlink list"
+        echo
+        exit
+    }
+
+    [ "$2" = "list" ] && {
+        TASK="list"
+    }
+
+    ITEM=$2
+
+    shift
+    shift
+fi
+
+# get the right activity and its summary
+counter=0
+while read line
+do
+    if [ "$TASK" = "list" ]; then
+        echo "$line"
+    fi
+
+    if [ "$TASK" = "copy" ]; then
+        let "counter = counter + 1"
+        [[ $counter = $ITEM ]] && summary=$line
+    fi
+
+done < "$PROJLINKS_FILE"
+
+if [ $TASK = "list" ]; then
+    exit
+fi
+
+[[ -z "$summary" ]] && echo "Could not find activity number $ITEM" && exit 0
+
+summary=`echo "$summary" | sed 's/\+[^ ]* *//g'`
+
+echo "Copying to clipboard: ${summary}"
+printf "%s" "$summary" | xclip -selection clipboard

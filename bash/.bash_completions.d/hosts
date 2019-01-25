@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function _ssh() {
+
+    #HOST_LIST="10.128.34.65 10.128.34.64 10.128.34.63 10.128.17.121"; 
+    HOST_LIST=$HOST_LIST" $(awk '$1~/^[^#]/ {print $2}' /etc/hosts)"; 
+    HOST_LIST=$HOST_LIST" $(awk '$1~/^[^#]/ {print $1}' /etc/hosts)"; 
+
+    #echo $HOST_LIST; 
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -o plusdirs -f -X '!*' -W "$(echo $HOST_LIST)" -- $cur) )
+    #COMPREPLY=( $( compgen -o plusdirs -f -X '!*' -- $cur ) )
+}
+
+complete -F _ssh ssh
+complete -o filenames -F _ssh scp
+complete -o filenames -F _ssh rsync
+
+
+
+
+

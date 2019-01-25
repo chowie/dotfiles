@@ -1,0 +1,53 @@
+#!/bin/bash
+
+APP=$1
+DATE=`date +%Y-%m-%d`
+LOGFILE="${APP}-${DATE}.log"
+REMOTE_DIR=/usr/local/applogs/laravel
+
+L4_LOG_DIR=/var/www/${APP}/app/storage/logs
+L5_LOG_DIR=/var/www/${APP}/storage/logs
+
+if [ -d $L4_LOG_DIR ]
+then
+    LOCAL_DIR=$L4_LOG_DIR
+elif [ -d $L5_LOG_DIR ]
+then
+    LOCAL_DIR=$L5_LOG_DIR
+else
+    LOCAL_DIR=''
+fi
+
+if [[ "$2" == "local" && -z "$LOCAL_DIR" ]]
+then
+    echo "Can't find local log dir for ${1}. exiting."
+    exit 1;
+fi
+
+LOGLEVELS_TOP='ERROR|^\#([0-9]|10)\s'
+LOGLEVELS_BOTTOM='INFO|DEBUG|LOGIN|NOTICE|WARNING'
+
+if [ "$2" == "local" ]
+then
+    FULL_LOGFILE="${LOCAL_DIR}/${LOGFILE}"
+else
+    FULL_LOGFILE="${REMOTE_DIR}/${LOGFILE}"
+fi
+
+
+    #multitail \
+        #-cS php -e 'ERROR' -l "tail -f -n 30 ${FULL_LOGFILE}" \
+        #-cS php -e 'DEBUG|LOGIN|NOTICE|WARNING' -l "tail -f -n 30 ${FULL_LOGFILE}"
+
+if [ "$2" == "local" ]
+then
+    multitail \
+        -cS php -e ${LOGLEVELS_TOP} -l "tail -f -n 30 ${FULL_LOGFILE}" \
+        -cS php -e ${LOGLEVELS_BOTTOM} -l "tail -f -n 30 ${FULL_LOGFILE}"
+else
+    multitail \
+        -cS php -e ${LOGLEVELS_TOP} -l "ssh boedevphplx 'tail -f -n 30 ${FULL_LOGFILE}'" \
+        -cS php -e ${LOGLEVELS_BOTTOM} -l "ssh boedevphplx 'tail -f -n 30 ${FULL_LOGFILE}'"
+fi
+
+

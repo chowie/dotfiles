@@ -1,0 +1,23 @@
+#! /bin/bash
+
+_dbs() {
+
+    local cur prev opts
+    COMPREPLY=()
+
+    cur=${COMP_WORDS[COMP_CWORD]}
+
+    case "${cur}" in 
+        -l*) use="log" ;;
+        -cla*) use="ClearAuth" ;;
+        -clw*) use="ClearWebsite" ;;
+        -re*) use="Revisions" ;;
+        -ri*) use="RIASelect" ;;
+        -w*) use="Webstore" ;;
+        -m*) use="MSUPayments" ;;
+    esac
+    COMPREPLY=( $( compgen -W "$use" -- $cur ) )
+}
+
+complete -F _dbs dbs
+

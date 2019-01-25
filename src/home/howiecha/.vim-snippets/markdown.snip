@@ -1,0 +1,51 @@
+snippet user-story
+    As a ${1:Type of user}, I want ${2:some goal} so that ${3:some reason}.${0}
+
+snippet incomming-receipts
+    1. If the receipt is for ${1} that do not have to be repaid then
+       transaction type ${2} Contribution can be selected.
+    2. If the receipt is for $1 that have to be repaid then
+       transaction type $2 Loan can be selected.
+    3. Can enter the transaction date
+    4. Can enter method of payment
+    5. Can enter the contributor's name: 
+        - If the name exists in the committee's list of names, then it can be
+          selected and added to the entry.  
+        - If the name does not exist in the committee's list, then the committee
+          user can add a new name to the list and it is added to the entry.
+    6. Can enter the receipt amount.
+    7. The correct statement is automatically assigned to the entry.
+    8. Has the option to enter a description for the receipt.
+    9. Has the option to indefinitely repeat the receipt entry based on date and
+       transaction type.
+    ${0}
+snippet outgoing-receipts
+    As a Committee User, I want to enter receipts for ${1:type of expenditure}
+    so that I can file them with the correct statement schedule.
+
+    #### Detail
+    
+    1. If the expense was paid for with ${2:payment method} and the amount is
+       ${3:greater/less than $amount} is for ${4:describe expenditure} then
+       transaction type $1 can be selected.
+    3. Can enter the transaction date
+    4. Can enter method of payment
+    5. Can enter the name of the person who made the expenditure: 
+        - If the name exists in the committee's list of names, then it can be
+          selected and added to the entry.  
+        - If the name does not exist in the committee's list, then the committee
+          user can add a new name to the list and it is added to the entry.
+    6. Can enter the receipt amount.
+    7. The correct statement is automatically assigned to the entry.
+    8. Has the option to enter a description for the receipt.
+    9. Has the option to indefinitely repeat the receipt entry based on date and
+       transaction type.
+    ${0}
+
+snippet list-item-new-task
+alias todo td
+    - [ ] ${1:TARGET} 
+    ${0}
+snippet ~requirement
+    ~requirement ${0}
+

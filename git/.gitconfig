@@ -1,0 +1,27 @@
+[user]
+	email = christopher.howie@egov.com
+	name = Christopher Howie
+[push]
+	default = simple
+[alias]
+    ywd = !bash -c 'source ${HOME}/bin/yesterworkday.sh && yesterworkday'
+    ignore = !git update-index --assume-unchanged
+    unignore = !git update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep ^[a-z]
+    mr = !sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -
+    daily = log --date=format:%c --pretty=format:\"[%h] %s %b\" 
+    ;daily-color = log --pretty=format:\"%Cred%h%Creset %C(white)%s%Creset (%C(blue)%cD%Creset) %C(Yellow)%d%Creset\" --since="yesterworkday"
+    daily-color = log --pretty=format:\"%Cred%h%Creset %C(white)%s%Creset (%C(blue)%cD%Creset) %C(Yellow)%d%Creset\"
+    ;report = log --date=local --pretty=format:"%Cred%h%Creset (%C(blue)%cD%Creset) %C(Yellow)%d%Creset %n %C(white)%s%Creset%n%b" --after=yesterday
+[commit]
+	;template = /home/howiecha/.gitmessage
+[init]
+	templatedir = ~/.git-templates
+[core]
+	;hooksPath = /etc/git/hooks
+[merge "ours"]
+	driver = true
+[color]
+	ui = true
+[core]
+	pager = less -r

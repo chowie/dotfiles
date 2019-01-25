@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export GIT_BRANCH=$(git branch | grep -E '^[*]' | cut -d' ' -f2 )
+
+echo "$(date --rfc-3339="seconds") [${GIT_BRANCH}] ${@}" | tee -a ./.logtime
+

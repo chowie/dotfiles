@@ -1,0 +1,30 @@
+127.0.0.1	localhost
+127.0.1.1	howiecha-ubuntu
+127.0.0.1   local.boeauth.app
+127.0.0.1   local.grav.app
+127.0.0.1   10.128.34.65
+10.128.34.65   cfrdevweb 
+127.0.0.1   10.128.34.64
+10.128.34.64   cfrdevinf 
+127.0.0.1   10.128.34.63
+10.128.34.63   cfrdevload 
+127.0.0.1   10.128.17.121
+10.128.17.121   boedevphplx 
+10.128.22.77 boeload
+10.128.17.124 boelnxgitlab.boe.nictusa.com
+10.128.22.137    uatstaging.vpn
+192.168.248.12   uatstaging.boe
+10.128.17.16    scc.nictusa.com
+#Name:   boeload.boe.nictusa.com
+#Address: 10.128.22.77
+10.128.17.115 boedb
+#Name:   boedb.boe.nictusa.com
+#Address: 10.128.17.115
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+

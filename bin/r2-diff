@@ -1,0 +1,13 @@
+#!/bin/bash
+
+main_file=$1
+extension="${filename##*.}"
+filename="${main_file%.*}"
+diff_file=diff_"$main_file"
+
+touch $diff_file
+
+for diff_to_file in `ls "$filename"* | grep -v -E "^$main_file$"`;
+do
+    comm $main_file $diff_to_file
+done

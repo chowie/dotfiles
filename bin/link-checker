@@ -1,0 +1,42 @@
+#!/bin/bash
+##################################################
+# Get all of the hrefs from a url and get the response status code
+##################################################
+
+COLOR_DEFAULT=92
+COLOR_OK=32
+COLOR_OK2=34
+COLOR_ERROR=41
+
+if [ "$1" == "link" ];
+then
+    CHECK_URL=$2
+    HREFS=$(curl -L -ks $CHECK_URL | grep -o -E 'href="[^"]*"' | cut -d\" -f2)
+else
+    HREFS=$@
+fi
+
+
+for l in ${HREFS};
+do
+    status=$(curl -L -ksI $l | grep HTTP | tail -n 1 | awk '{print $2}')
+
+    if [[ $status -ge 200 && $status -lt 300 ]]
+    then
+        color_res=$COLOR_OK
+    elif [[ $status -ge 300 && $status -lt 400 ]]
+    then
+        color_res=$COLOR_OK2
+    elif [[ $status -ge 400 ]]
+    then
+        color_res=$COLOR_ERROR
+    else
+        color_res=$COLOR_DEFAULT
+    fi
+
+    show_color="\e[1;${color_res}m"
+
+    printf "  - ${show_color}%-3s\e[0m   %s\n"  $status $l
+
+done
+

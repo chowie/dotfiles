@@ -1,0 +1,7 @@
+#!/bin/sh
+# HyperTerm
+# Wrapper to start ~/.plugins/hyperterm/dist/linux/HyperTerm 
+
+cd 
+${HOME}/.plugins/hyperterm/dist/linux/HyperTerm &
+

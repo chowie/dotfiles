@@ -1,0 +1,96 @@
+#!/bin/bash 
+# User Defined Functions
+
+
+function massfind() {
+    if [ "$1" == "update" ]
+            then
+        mode="update";
+        else
+        mode="test";
+    fi
+
+    #for file in  $(cat emaillist | sed 's/[<>]//g' | awk '{print $4}');
+    for file in  $(cat emaillist | sed 's/[<>]//g' | sed 's/ /,/g');
+        do
+        file=$(echo $file | sed 's/,/ /g');
+        fname=$(echo $file | awk '{print $2}');
+        lname=$(echo $file | awk '{print $3}' | sed "s/_/ /g");
+        email=$(echo $file | awk '{print $4}');
+        ids=$(finduser email "$email" | awk '$1~ "^[0-9]" {print $1" "$2" "$9}' | awk '$3~ "^[0-9]"' | awk '$2="([a-zA-Z.@-]+" {print $1}' | sort -u);
+        printf "\n=========================\n";
+        echo "$email $fname $lname $ids";
+        if [[ "$ids" =~ ^[0-9]+$ ]]
+            then
+                if [ "$mode" == "update" ]
+                    then
+                    echo "    *** updating record id: $ids";
+                    testvar=$(finduser update -i "$ids" -u "$email" -f "$fname" -l "$lname" | sed "s/^/    > /g");
+                    printf "$testvar\n";
+                fi
+                echo "$email $fname $lname $ids" >> ~/orphans/massfind_found-and-updated.txt;
+            else
+                echo "    - No Id found";
+                echo "$email $fname $lname $ids" >> ~/orphans/massfind_no-id-found.txt;
+
+        fi
+    done
+}
+
+function sendforgotpass() {
+    postvar="txtemail=$1"
+    curl -F "$postvar"  http://clear.msu.edu/login/forgotpass.php?funct=resetpass&application=
+}
+
+export -f sendforgotpass
+
+function finduser() {         
+    data=$(sclear "php /var/auth/finduser.php $@" | tee /dev/tty | awk '$1~/^Id/ {print $2}' | tr -d '\n' | pbcopy)
+    #echo $data | awk '$1~/^Id/ {print $2}' | pbcopy
+}
+
+export -f finduser
+
+function riadig() {         
+    ssh howiecha@clear.msu.edu "php /var/auth/riadig.php "$@
+}
+
+export -f riadig
+
+function dbs() {
+    dbs.php $@
+}
+export -f dbs
+
+source ${HOME}/bin.dropbox/dbs-completions.bash
+
+function lockscreen() {
+    /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend
+}
+
+export -f lockscreen
+
+function msufind() {
+    postvar="search=Search&fst=$1&lst=$2"
+    data=`curl --data "$postvar" https://search.msu.edu/people/index.php | w3m -dump -T text/html | grep -o -E 'Email:.*' | awk '{print $2}'`
+    echo ${data}
+    echo -n ${data} | pbcopy
+}
+
+export -f msufind
+
+# Get weather data for Lansing
+weather() {
+    echo Lansing, MI:
+    curl -s "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=${@:-48906}" | perl -ne 's/&amp;deg;/°/g;/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"';
+}
+
+export -f weather
+
+# Define a word using collinsdictionary.com
+define() {
+  curl -s "http://www.collinsdictionary.com/dictionary/english/$*" | sed -n '/class="def"/p' | awk '{gsub(/.*<span class="def">|<\/span>.*/,"");print}' | sed "s/<[^>]\+>//g";
+}
+
+export -f define
+

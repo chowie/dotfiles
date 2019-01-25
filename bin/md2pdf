@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Pandoc Markdown 2 PDF
+# Author: Christopher Howie
+# Last Modified: 2017-06-02
+# Description: This is the bash script I used to convert my wiki User Stories to PDF with
+# a table of contents and chapter, title page, page numbers and chapter breaks. A number of document 
+# customizations are set in the wiki document at the very to. The latex engine
+# will read a YAML block at the top of the markdown document and read any
+# variables that you set in that block. Example: (note that the block begins and ends with 3 dashes)
+#
+# ---
+# papersize: letter
+# fontsize: 10pt
+# documentclass: report
+# geometry: margin=1in
+# mainfont: DejaVu Sans
+# sansfont: DejaVu Sans
+# linkcolor: blue
+# links-as-notes: true
+# title: User Stories for MIDisclose::Candidate Transaction Entry
+# subject: User stories created during the functional design phase of MIDisclose::Candidate
+# date: 02 Jun 2017
+# author: Michigan Interactive, LLC
+# ---
+#
+# In order to define custom fonts, they must be available to you latex engine (texlive on Linux and OSX)
+
+fullname=$(basename "$1")
+#filename="${fullname%.*}"
+filename="$2"
+htmlname="${filename}.html"
+pdfsettings=${HOME}/.pandoc/00-settings.md
+pdfname="${filename}.pdf"
+mdname="${filename}.md"
+#gitlabname="$(echo $filename | sed 's/_RAW//')"
+#echo $filename
+#echo $gitlabname
+
+#pandoc -N --number-offset=0,0 -f markdown -s "$1" -t latex -o "${filename}.pdf"
+#pandoc -N --number-offset=0,0 --variable title="${title}" --variable mainfont="${mainfont}" --variable fontsize="${fontsize}" -f markdown -s -S "$1" --latex-engine=pdflatex --toc -o "${pdfname}"
+#pandoc -s "${htmlname}" -o "${pdfname}"
+#pandoc -N --number-offset=0,0 --smart -f markdown -s "$1" --latex-engine=xelatex --natbib --toc -o "${pdfname}"
+#pandoc -N --number-offset=0,0 --smart -f markdown -s "$1" --toc -o "${pdfname}"
+pandoc -N --number-offset=0,0 --smart -f markdown -s "$1" --toc -o "${mdname}"
+pandoc --highlight-style=pygments -N --number-offset=0,0 --smart --natbib -f markdown+footnotes -s --latex-engine=xelatex --toc -o "${pdfname}" "$pdfsettings" "$1" 
+

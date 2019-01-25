@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+_cleanName() {
+
+    OIFS="$IFS"
+    IFS=$'\n'
+    for i in "$@"; 
+    do
+        SOURCE_FILE=$i
+        fullname=$(basename "$i")
+        extension="${fullname##*.}"
+
+        NEW_NAME=`echo "$i" | sed 's/ *\-[^-]*\./\./g'`
+        NEW_NAME=`echo "$NEW_NAME" | sed 's/ *(Lyric Video) *//'`
+        NEW_NAME=`echo "$NEW_NAME" | sed 's/ *(\(Official\)* \(Lyric\|Audio\) Video) *//'`
+
+ 
+
+        echo $NEW_NAME 
+
+        mv "$i" "$NEW_NAME"
+
+    done;
+    IFS="$OIFS"
+
+
+}
+
+_cleanName "$@" 

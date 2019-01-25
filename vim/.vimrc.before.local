@@ -1,0 +1,35 @@
+let g:airline_powerline_fonts=1
+let g:airline_theme='hybrid'
+let g:airline_base16_improved_contrast = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_section_c = '%t'
+let g:airline_detect_spell=0
+let w:airline_skip_empty_sections = 0
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:webdevicons_enable = 1
+
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_ctrlp = 1
+"let g:airline_section_x = (tagbar, filetype, virtualenv)
+let g:airline#extensions#tagbar#flags = 'f'
+
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = 'ƛ'
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ctp'] =  ''
+
+"" change the default dictionary mappings for exact file node matches
+"let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['MyReallyCoolFile.okay'] = 'ƛ'
+"" add or override individual additional filetypes
+
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['myext'] = 'ƛ'
+"" add or override pattern matches for filetypes
+"" these take precedence over the file extensions
+
+"let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
+"let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*jquery.*\.js$'] = 'ƛ'
+
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'

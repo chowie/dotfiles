@@ -1,0 +1,619 @@
+" General Vim Configs
+"set rtp+=/usr/local/Cellar/macvim/7.4-104/MacVim.app/Contents/Resources/vim
+set encoding=utf-8
+let mapleader= ","
+setlocal spell spelllang=en_us
+set guioptions-=T
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+set guioptions-=b
+set background=dark
+
+"My global vars
+let g:my_browser = 'google-chrome '
+        
+" PHP stuff
+"au BufRead,BufNewFile *.ctp setfiletype php
+au BufRead,BufNewFile .php set filetype=php syntax=php
+
+" mutt stuff
+"au BufRead /tmp/mutt-* set tw=72
+
+" JavaScript Stuff
+"au BufRead,BufNewFile *.js setfiletype javascript
+"au BufRead,BufNewFile *.js set filetype=javascript
+
+autocmd BufNewFile,BufRead *.blade.php set filetype=blade
+autocmd BufNewFile,BufRead *.vue set filetype=vue
+
+"
+" Open incoming file
+function! ChangeArrayToObject()
+    s/\$\([^\[]*\)\[[\"']\([^'\"]*\)[\"']\]/\$\1->\2/g
+endfunction
+
+nnoremap <leader>to :call ChangeArrayToObject()<cr>
+
+set lcs=eol:⌝,tab:▸\  
+set relativenumber
+"au BufRead,BufNewFile *.md setlocal textwidth=80
+"vnoremap au :<C-U>silent! normal! []z<CR>
+"noremap au :/https\{0,1}:\/\/[^\b ]*<CR> 
+nnoremap ; :
+vnoremap ; :
+
+"autocmd FileType php let b:surround_45 = "<?php \r ?>"
+"autocmd FileType php let b:surround_61 = "<?= \r ?>"
+"autocmd FileType json :call JsonFormatter() 
+
+"autocmd FileType php NeoCompleteLock
+
+" My Project settings"
+"======================
+let PROJECT_INCOMING=$PROJECT_FILE_DIR + "/incoming.md"
+"nmap <leader>pi :execute "below new /Users/chris/Dropbox/MSU/incoming.md"<CR>
+nmap <leader>pt :execute "below new /Users/chris/Dropbox/lists/todo.txt"<CR>
+nnoremap <leader>gdt :normal! i<C-r>=strftime("%c")<CR><CR>
+nnoremap <leader>fs :normal! mm[s1z=`m<cr>
+imap <C-f> <ESC>:normal! mm[s1z=`mei<cr>
+inoremap \fp <C-R>=getcwd()<CR>
+":iab php- <?php <C-O>mm ?><C-O>`m
+":iab php= <?= <C-O>mm ?><C-O>`m
+
+" Project files 
+
+function! OpenProjectFile()
+
+    let l:proot = substitute(system('git rev-parse --show-toplevel'),'\n$','','')
+    let l:filePath = l:proot . "/README.md"  
+    
+    if !filereadable(l:filePath) 
+        autocmd BufNewFile * :write
+    endif
+
+    execute "below new " . l:filePath 
+
+endfunction 
+
+" Open incoming file
+function! OpenProjectIncoming()
+    execute "below new ~/Documents/Notes/inbox.md"
+    normal! Go
+    s/^$/\=strftime("%c")
+    normal! yss]
+     "call setline(line('.'), getline('.') . ' ' . myts)
+endfunction
+
+function! FixMysqlEscapeString()
+    let reqv = matchstr('GET','GET')
+    echo reqv
+endfunction 
+
+" Open my todo.txt file and add a row to the EOF
+" ====================
+function! TodotxtAddItem() 
+    let l:todo_file = "/home/howiecha/Documents/Todo/todo.txt"
+    execute "below new " . l:todo_file
+endfunction
+
+nnoremap <leader>pr :call OpenProjectFile()<cr>
+nnoremap <leader>pi :call OpenProjectIncoming()<cr>
+nnoremap <leader>tb :execute "below new /Users/chris/Documents/code-snippets/vim-classes/beginner.md"<cr>
+nnoremap <leader>td :call TodotxtAddItem()<cr>
+
+""nnoremap <leader>fmyx :normal! ysw)<cr> 
+nnoremap <leader><leader>fmyx :normal! v/\]<cr>  
+
+function! FixMysqlEscapeString() 
+    normal! :g/\$_\(GET\|POST\)\[["a-zA-Z0-9_-]*\]
+endfunction 
+
+" GitLab
+nmap <leader>lab :execute "!open http://gitlab.nictusa.com"<cr>
+"autocmd Filetype gitcommit setlocal spell textwidth=72
+
+" trying to fix problem with fenced php in markdown not highlightin
+filetype plugin on
+au BufNewFile,BufRead *.endfile set filetype=endfile
+filetype plugin indent on
+
+"autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+"au BufRead,BufNewFile *.md setlocal textwidth=80
+"autocmd FileType markdown nmap <buffer> <leader><leader>int :normal!i- [ ] <cr>
+
+let g:markdown_github_languages = ['php', 'javascript', '"bash=sh', 'html','git','todo']
+let g:markdown_fenced_languages = ['html', 'bash=sh', 'php', 'js=javascript', 'blade', 'git', 'todo']
+
+" Markdown headings
+function! UnderlineHeading(level)
+    if a:level == 1
+        normal! yypVr=
+    elseif a:level == 2
+        normal! yypVr-
+    elseif a:level == 3
+        normal! I### A
+    else   
+        normal! I###
+    endif
+endfunction
+
+
+" Format Dates
+" Visually select date and format like Y-m-d
+function! SmelvinDateFormatter() 
+
+    echo system('echo '.shellescape(join(getline(a:firstline, a:lastline), "\n")))
+    "php -r 'echo date("Y-m-d",strtotime("December 31 2016"));'
+endfunction
+
+nnoremap <leader>h1 :call UnderlineHeading(1)<cr>
+nnoremap <leader>h2 :call UnderlineHeading(2)<cr>
+nnoremap <leader>h3 :call UnderlineHeading(3)<cr>
+
+function! MakeMarkdownLink()
+    g/[A-Za-z0-9._%-]\{1,}@[A-Za-z0-9.-]\{1,}\.[A-Za-z]\{2,4}/
+    normal! gn
+    "normal! mmhxi[]<ESC>P(ewebster@msu.edu)
+    "normal! ,mlhxi[^op](ewebster@msu.edu)
+endfunction
+
+function! MakeMarkdownTableHeaders()
+    normal! yyp 
+    execute 's/\w/-/g' 
+endfunction 
+
+function! MarkdownFormatTable()
+    execute 's/\(\t\|$\|^\)\{1,}/ | /g' 
+    execute 'Tabularize /|'
+endfunction 
+
+nnoremap <leader>ht :call MakeMarkdownTableHeaders()<cr> 
+nnoremap <leader>mft :call MarkdownFormatTable()<cr> 
+vnoremap <leader>mft :call MarkdownFormatTable()<cr> 
+
+nnoremap <leader>ml :call MakeMarkdownLink()<cr>
+" Add 5 spaces to the end of the line.  Mostly used for Markdown
+nmap <leader><leader>nl :normal! mmA     <C-o>`m<cr>
+
+"NERDCommenter
+imap <C-c> <plug>NERDCommenterInsert
+
+" Navigatio
+nmap <leader>cn :cn <cr>
+nmap <leader>cp :cp <cr>
+nmap <C-s> <ESC>:w <cr>
+imap <C-s> <ESC>:w <cr>
+nnoremap <leader>sop :source %<cr>
+map <leader>bd :bd<cr>
+nnoremap m1 :normal! kmmjdd{p'm<cr>
+nnoremap m2 :normal! kmmjdd{jp'm<cr>
+nnoremap m3 :normal! kmmjdd{jjp'm<cr>
+nnoremap <leader>bf :bfirst<cr>
+nnoremap <leader>bl :blast<cr>
+nnoremap <leader>bn :bnext<cr>
+nnoremap <leader>bp :bprev<cr>
+inoremap <C-Y> <Esc>klyiwjPa
+
+" Use mysql.vim conf file if available {
+    if filereadable(expand("~/.config/mysql.vim"))
+        source ~/.config/mysql.vim
+    endif
+" }
+
+function! RunMysqlDatabaseQuery()
+
+    let l:sql = join(getline("'<","'>"),'<bar>')
+    "echo l:sql 
+    let l:mystate = 'mysql -u ' . g:mysql_vim_username . ' --password='. g:mysql_vim_password . '  -e "' . l:sql . '"'
+    "echo l:mystate 
+    "s/^$/\=execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e '" . l:sql . "'"
+    " use a temp file for result
+    let s:tmpfile = tempname()
+
+    " single line copy of query followed by blank line
+    "echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")).
+    echo system('echo '.shellescape(join(getline(a:firstline,a:lastline)," ")) . ' > '.s:tmpfile)
+    "echo system('echo >> '.s:tmpfile)
+"select * from clear_workshops.users;
+show columns in clear_workshops.users;
+    " pipe through mysql into temp file
+    echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " ' . l:sql  . '" >> ' . s:tmpfile)
+    let rcomm = 'ssh howiecha@clear.msu.edu "mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e" ' . l:sql 
+    echo system('echo "' . rcomm . '" >> ' . s:tmpfile)
+    "echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " ' . l:sql  . '" >> ' . s:tmpfile)
+    " and open in new buffer
+    exec 'below new '.s:tmpfile
+
+endfunction
+
+function! GetTableColumns()
+    "call inputsave()
+    "let l:db = input('Enter database name: ')
+    "let l:table = input('Enter table name: ')
+    "call inputrestore()
+    let l:table= join(getline("'<","'>"),'<bar>')
+    "execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " ". l:db . " -e 'SHOW COLUMNS IN " . l:table . "' | awk '{print $1}'"
+    let s:tmpfile = tempname()
+    echo system('/usr/local/mysql/bin/mysql -u ' . g:mysql_vim_username . ' --password=' . g:mysql_vim_password . ' -e " SHOW COLUMNS IN ' . l:table . '" | ' . " awk '{print $1}' >> " . s:tmpfile)
+    exec 'below new '.s:tmpfile
+    "execute "read !/usr/local/mysql/bin/mysql -u " . g:mysql_vim_username . " --password=". g:mysql_vim_password . " -e 'SHOW COLUMNS IN " . l:table . "' | awk '{print $1}'"
+endfunction
+
+nnoremap <leader><leader>mytc :call GetTableColumns()<cr>
+vnoremap <leader><leader>mytc :call GetTableColumns()<cr>
+vnoremap <Leader><leader>myq :call RunMysqlDatabaseQuery()<cr> 
+
+" Replacements
+function! ReplaceHighlighted()
+    call inputsave()
+    let replacement = input('Replace highlight with: ')
+    call inputrestore()
+    execute '%s//' . replacement . '/g'
+endfunction
+
+nmap <leader><leader>r :call ReplaceHighlighted()<cr>
+
+
+" Working in PHP
+nmap <leader>sfp :set ft=php<cr>
+nmap <leader>phpi :normal! i<?= <ESC>:normal! mmi?><ESC>:normal! `mi <cr>
+
+" Split array arguments into multiple lines and fix indenting 
+function! ArrayArgsToLines() 
+    normal! [(m`vi)"ad
+    execute "normal! i\r\r"
+    execute "normal! k\"ap"
+    execute "normal! f(vi)"
+    execute 's/,/,\r/g'
+    execute "normal! va)="
+endfunction 
+
+nmap <leader>psa :call ArrayArgsToLines()<cr> 
+
+function! SetTodoOptions()
+    set wrap
+    set linebreak
+    set nolist  " list disables linebreak
+    set formatoptions+=l
+    set showbreak=\ \ \ \ 
+    set textwidth=80
+    set wrapmargin=0
+    nmap <leader>d :normal! ^ix <C-R>=strftime('%F')<C-M> <cr>
+endfunction
+
+"au FileType todo call SetTodoOptions()
+
+" Remove problematic tabs
+""nnoremap <leader>fix :normal! magg=G`a <cr>
+nnoremap <leader>fix :normal! maggvGgq`a <cr>
+
+" Add spaces around equal sign
+nnoremap <leader>as= :normal! ^/=<cr>nxi = <ESC>
+
+" Custimizations
+":iab <expr> dt strftime("%x")
+:iab <expr> dts strftime("%c")
+:iab <expr> uts strftime("%x %X (%Z)")
+
+" Add gitlab markdown toc numbers to link
+" iThe kr~
+
+function! AddTocNumbersToLinks()
+    normal! ^f[l"ayiw
+    let @a = substitute(@a, '\.', '', 'g')
+    let @a = @a . "-"
+    normal! f#"ap
+endfunction
+
+map <leader>tocnum :call AddTocNumbersToLinks()<cr>
+
+if has("gui_running")
+    set lines=999
+    set columns=999
+    set background=dark
+    colorscheme hybrid
+    "set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+    "set guifont=DroidSansMonoForPowerline\ Nerd\ Font\ 10
+    "set guifont=LiterationMonoPowerline\ Nerd\ Font\ 10
+    set guifont=Liberation\ Mono\ for\ Powerline\ 11
+else
+    let g:solarized_termcolors=16
+    colorscheme solarized
+endif
+
+if has("gui_macvim")
+    set lines=999
+    set columns=999
+    "set guifont=Ubuntu\ Mono\ Plus\ Nerd\ File\ Types\ Mono:h14 
+    "set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h14
+    "set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete:h14
+    "set guifont=DroidSansMonoForPowerline\ Nerd\ Font:h15
+    set transparency=0
+endif
+
+" Custom Dictionaries
+"set dict+=~/Dropbox/lists/todo_words
+
+" VimTodo Settings"
+let g:todo_taskurl=""
+let g:todo_browser="google-chrome"
+"let g:todo_browser="open /Applications/Google\ Chrome.app/"
+let g:todo_states=[['TODO(t)', 'WORKING(W)', 'INPROGRESS(i)',  '|', 'DONE(d)', 'CANCELLED(c)'],
+    \['WAITING(w)', 'HOLD(h)', 'SOMEDAY(s)', 'CLOSED(l)']]
+let g:todo_state_colors= {
+    \'DONE': 'Green',
+    \'CLOSED': 'Grey',
+    \'CANCELLED': 'Red',
+    \'TODO': 'Blue',
+    \'INPROGRESS': 'Blue',
+    \'WAITING': 'Yellow',
+    \'HOLD': 'Grey',
+    \'SOMEDAY': 'Grey'
+    \}
+
+
+
+"" PowerLine configs
+set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+
+set statusline=%f\ %{WebDevIconsGetFileTypeSymbol()}\ %h%w%m%r\ %=%(%l,%c%V\ %Y\ %=\ %P%)
+
+" CtrlP Settings
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_use_caching = 1
+let g:ctrlp_root_markers = ['.git','.root','.riaapp']
+
+" TwitVim"
+" Use .vimrc.local.twitvim if available {
+    if filereadable(expand("~/.vimrc.local.twitvim"))
+        source ~/.vimrc.local.twitvim
+    endif
+" }
+
+" Pull results for specified list
+function! TwitVimOptions()
+    set wrap
+    set linebreak
+    set nolist  " list disables linebreak
+    set formatoptions+=l
+    set showbreak=\ \ \ \ 
+    set textwidth=80
+    set wrapmargin=0
+    resize 20
+endfunction
+
+"au FileType twitvim call TwitVimOptions()
+
+" Show profile of user under cursor
+function! TwitVimProfileTwitter()
+    normal! "ayt: 
+    let user = @a
+    execute 'ProfileTwitter ' . user
+endfunction 
+
+nmap <leader>tvup :call TwitVimProfileTwitter()<cr>
+
+function! GetTwitVimList(level)
+    if a:level == 'futurequake'
+        execute 'ListTwit futurequake'
+    elseif a:level == 'edc'
+        execute 'ListTwit edc'
+    elseif a:level == 'my-news'
+        execute 'ListTwit my-news'
+    elseif a:level == 'vim'
+        execute 'ListTwit vim'
+    elseif a:level == 'web-dev'
+        execute 'ListTwit web-development'
+    endif
+endfunction
+
+nmap <leader>tvfq :call GetTwitVimList('futurequake')<cr>
+nmap <leader>tvedc :call GetTwitVimList('edc')<cr>
+nmap <leader>tvmn :call GetTwitVimList('my-news')<cr>
+nmap <leader>tvim :call GetTwitVimList('vim')<cr>
+nmap <leader>tvr :execute 'RepliesTwitter'<cr>
+nmap <leader>tvp :execute 'ProfileTwitter'<cr>
+
+
+
+
+" Convert markdown to HTML
+nmap <leader>md :% !~/bin.dropbox/Markdown.pl --html4tags % <cr>
+
+" Escape/unescape & < > HTML entities in range (default current line).
+function! HtmlEntities(line1, line2, action)
+  let search = @/
+  let range = 'silent ' . a:line1 . ',' . a:line2
+  if a:action == 0  " must convert &amp; last
+    execute range . 'sno/&lt;/</eg'
+    execute range . 'sno/&gt;/>/eg'
+    execute range . 'sno/&amp;/&/eg'
+  else              " must convert & first
+    execute range . 'sno/&/&amp;/eg'
+    execute range . 'sno/</&lt;/eg'
+    execute range . 'sno/>/&gt;/eg'
+  endif
+  nohl
+  let @/ = search
+endfunction
+command! -range -nargs=1 Entities call HtmlEntities(<line1>, <line2>, <args>)
+noremap <silent> \h :Entities 0<CR>
+noremap <silent> \H :Entities 1<CR>
+
+
+" Windows settings
+if has("win32")
+    "" for some reasons, GVim for Windows doesn't automatically go to home dir
+    cd ~/
+    "" Set to use cygwin's grep instead of Windows findstr
+    set grepprg=grep
+
+    if has("gui_running")
+        " Maximize GVim
+        au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
+    endif
+
+    "" Windows copy and paste
+    "" TODO does this actually work?  need to test
+    nmap <C-V> "+gP
+    imap <C-V> <ESC><C-V>i
+    vmap <C-C> "+y
+endif
+
+
+let g:PreviewBrowsers='google-chrome,firefox,safari'
+
+" EXPERIMENTAL:
+" TODO What is this?
+vnoremap <F2> d:execute 'normal i' . join(sort(split(getreg('"'))), '')<CR>
+""vnoremap <F2> d:execute !perl -ne '$,=" ";print sort split /\s+/'<CR>
+
+
+"" Find Project Root
+function! FindProjectRoot(lookFor)
+    let pathMaker='%:p'
+    while(len(expand(pathMaker))>1)
+        let pathMaker=pathMaker.':h'
+        let fileToCheck=expand(pathMaker).'/'.a:lookFor
+        if filereadable(fileToCheck)||isdirectory(fileToCheck)
+            return expand(pathMaker)
+        endif
+    endwhile
+    return 0
+endfunction
+
+command! -range -nargs=1 VProjRoot call FindProjectRoot(<args>)
+
+nmap <leader>sr :!echo %:p:s?C:\\Users\\Christopher\\repositories\\[^\\]*\\?? <cr>
+
+
+function! GetFilePath(reg)
+    "let reg=input('Which ')
+    let filePath=expand('%:p')
+    execute 'let @'.a:reg.' = expand("%:p")'
+    echo filePath
+    return 0
+endfunction
+
+function! GetFilePathAndLineNumber(reg)
+    let filePath=join([expand('%:p'),line('.')], ':')
+    execute 'let @'.a:reg.' = filePath'
+    echo filePath
+    return 0
+endfunction
+
+
+command! -register GetFilePath call GetFilePath(<q-reg>)
+"nnoremap <leader>fp :Get File Path<Cr>
+nnoremap <leader>gfp :GetFilePath a<cr>
+
+command! -register GetFilePathAndLineNumber call GetFilePathAndLineNumber(<q-reg>)
+nnoremap <leader>gfpn :GetFilePathAndLineNumber a<cr>
+
+" Open link in browser
+function! Browser()
+  let line = getline(".")                       
+  let gline = matchstr(line, '\(https*://\|www\.\)[^ ,;\t)]*')
+  "exec '!open /Applications/Google\ Chrome.app '.gline
+  exec '!'.g:my_browser.' '.line
+endfunction
+
+map <leader>o :call Browser()<CR>
+
+" Tabularize Settings
+nnoremap <Leader>a= :Tabularize /[.+-]*=[>]*<CR>
+vnoremap <Leader>a= :Tabularize /[.+-]*=[>]*<CR>
+nmap <Leader>acom :Tabularize /\/\/ <CR>
+vmap <Leader>acom :Tabularize /\/\/ <CR>
+nmap <Leader>a:: :Tabularize /^[^:]*\zs\:/<CR>
+vmap <Leader>a:: :Tabularize /^[^:]*\zs\:/<CR>
+nmap <Leader>a( :Tabularize /[()]/<CR>
+vmap <Leader>a( :Tabularize /[()]/<CR>
+
+function! CopyMatches(reg)
+  let hits = []
+  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/ge
+  let reg = empty(a:reg) ? '+' : a:reg
+  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+endfunction
+command! -register CopyMatches call CopyMatches(<q-reg>)
+
+map <Leader>T:grep -rn "^\##" %<CR>
+
+"execute "set colorcolumn=" . join(range(150,335), ',')
+"highlight ColorColumn guibg=#073642 guifg=#6f6f6f
+"call matchadd('ColorColumn', '\%95v', 150)
+
+" Calendar 
+"let g:calendar_google_calendar = 1
+"let g:calendar_google_task = 1
+"nnoremap <leader>cal :execute "Calendar -view=day"<cr> 
+
+" Abbreviations "
+"if filereadable(expand("~/.vimrc.local.abbreviations"))
+    "source ~/.vimrc.local.abbreviations
+"endif
+
+"colorscheme Tomorrow-Night
+
+" vim-scripts/sessionman configs 
+let sessionman_save_on_exit = 1
+nnoremap <Leader>ss :execute 'SessionSave'<cr>
+nnoremap <Leader>sc :execute 'SessionClose'<cr>
+
+" Toggle Tagbar 
+nnoremap <Leader>T :execute 'TagbarToggle'<cr> 
+let g:tagbar_ctags_bin = '/usr/bin/ctags'
+
+" Geeknote
+noremap <F8> :Geeknote<cr> 
+let g:GeeknoteFormat="markdown" 
+let g:GeeknoteNotebookFilters=
+            \[
+            \   'Todo'
+            \]
+
+
+" Simplenote
+if filereadable(expand("~/.vimrc.simplenote.local"))
+    source ~/.vimrc.simplenote.local
+endif
+"
+" Define some single Blade directives. This variable is used for highlighting only.
+let g:blade_custom_directives = ['datetime', 'javascript','php', 'markdown', 'html']
+
+" Define pairs of Blade directives. This variable is used for highlighting and indentation.
+let g:blade_custom_directives_pairs = {
+      \   'markdown': 'endmarkdown',
+      \   'cache': 'endcache',
+      \ }
+
+" neosnippets Plugin key-mappings.
+
+let g:neosnippet#snippets_directory = "~/.vim-snippets" 
+
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" Emmett
+let g:user_emmet_settings = {
+\    'blade': {
+\        'default_attributes': {
+\            'button': [{'type': 'button'}, {'class': 'btn btn-default'}],
+\        },
+\        'filters': 'html',
+\        'expandos': {
+\            'btn-group': "div.btn-group[role=group][aria-label=...]>button*",
+\            'panel': ".panel.panel-default>.panel-heading+.panel-body+.panel-footer",
+\            'li-dropdown': "li.dropdown*>a.dropdown-toggle>i.fa.fa-caret-down+|*"
+\
+\        },
+\        'aliases': {
+\        }
+\    },
+\}
+
+
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+##############################
+# Convert audio file to m4a 
+# - Accepts a list of files
+##############################
+
+function _mkm4a() {
+
+    OIFS="$IFS"
+    IFS=$'\n'
+    for i in "$@"; 
+    do
+        echo $i
+        SOURCE_FILE=$i
+        fullname=$(basename "$i")
+        extension="${fullname##*.}"
+        NEW_NAME="${SOURCE_FILE%.*}"
+
+        ffmpeg -i "$SOURCE_FILE" -c:a libvo_aacenc -b:a 256k "${NEW_NAME}.m4a"
+
+    done;
+    IFS="$OIFS"
+
+
+}
+
+
+_mkm4a "$@"

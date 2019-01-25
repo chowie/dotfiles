@@ -1,0 +1,88 @@
+export TERM="xterm-256color"
+
+# Set up the prompt
+ZSH_THEME_GIT_PROMPT_PREFIX="[git:"
+ZSH_THEME_GIT_PROMPT_SUFFIX="]$reset_color"
+ZSH_THEME_GIT_PROMPT_DIRTY="$fg[red]+"
+ZSH_THEME_GIT_PROMPT_CLEAN="$fg[green]"
+
+function get_pwd() {
+  echo "${PWD/$HOME/~}"
+}
+
+function put_spacing() {
+ 
+}
+
+local git=$(git_prompt_info)
+if [ ${#git} != 0 ]; then
+    ((git=${#git} - 10))
+else
+    git=0
+fi
+
+local bat=$(battery_charge)
+if [ ${#bat} != 0 ]; then
+    ((bat = ${#bat} - 18))
+else
+    bat=0
+fi
+
+local termwidth
+(( termwidth = ${COLUMNS} - 3 - ${#HOST} - ${#$(get_pwd)} - ${bat} - ${git} ))
+
+local spacing=""
+for i in {1..$termwidth}; do
+    spacing="${spacing} "
+done
+echo $spacing
+
+function git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+
+autoload -Uz promptinit
+promptinit
+#prompt adam1
+PROMPT='%F{cyan}local:%f %F{yellow}$(get_pwd)%f
+$fg[cyan]%m: $fg[yellow]$(get_pwd)$(put_spacing)$(git_prompt_info)
+%F{red}→%f '
+#prompt PROMPT
+#PROMPT='%F{red}%n%f@%F{blue}%m%f %F{yellow}%1~%f %# '
+RPROMPT='[%F{yellow}%?%f]'
+
+setopt histignorealldups sharehistory
+
+# Use emacs keybindings even if our EDITOR is set to vi
+bindkey -e
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+
+#PROMPT='\[\e[0;31m\]\w →\[\e[m\] '

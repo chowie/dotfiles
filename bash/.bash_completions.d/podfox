@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function _podfox() {
+    
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    #local -r OPTS="-@ -@@ -+ -++ -d -f -h -p -P -PP -a -n -t -v -vv -V -x"
+    opts="import update feeds episodes download rename"
+
+    FEEDS_DIR="$HOME/Podcasts"
+
+    case "$prev" in
+        #import|update|feeds|episodes|rename)
+            #;;
+        download)
+            COMPREPLY=( $( compgen -W '--how-many=' -- "$cur" ))
+            ;;
+        podfox)
+            COMPREPLY=( $(compgen -W 'import update feeds episodes download rename' -- ${cur}) )
+            return 0
+            ;;
+        *)
+            OIFS="$IFS"
+            IFS=$'\n' 
+            tmp=( $(compgen -W "$(\ls "$FEEDS_DIR")" -- "${COMP_WORDS[$COMP_CWORD]}" ))
+            COMPREPLY=( "${tmp[@]// /\ }" )
+            IFS="$OIFS"
+            #COMPREPLY=( $(compgen -W 'import update feeds episodes download rename' -- ${cur}) )
+            return 0
+            ;;
+    esac
+
+    return 0
+
+}
+
+complete -o nospace -F _podfox podfox
+
+
+
+
+

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+GIT_DIRS=(
+    ${HOME}/Documents/Projects/keyboard-commander
+    ${HOME}/Documents/Projects/final-countdown
+    ${HOME}/Documents
+    ${HOME}/Documents/code-snippets/ubuntu-configs
+    /var/www/midisclose.com/boeauth 
+    /var/www/midisclose.com/candidate-demo.wiki 
+    /var/www/cenr
+    /var/www/eenrpass
+    /var/www/r2
+    /var/www/analystview
+    ${HOME}/Documents/code-snippets/apache2/conf
+    /var/www/merts-software
+    /var/www/merts-unlock
+    /var/www/elobby-pass/vendor/michigan-interactive/project-tools
+    /var/www/elobby
+    /var/www/elobby-pass
+    )
+
+for dir in ${GIT_DIRS[@]}; 
+do
+    cd $dir
+    pwd
+    printf "%40s\n" | tr " " "-"
+    printf "\n";
+    git standup $@
+    printf "\n\n";
+done
+
+exit 0

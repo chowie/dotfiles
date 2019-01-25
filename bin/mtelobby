@@ -1,0 +1,21 @@
+#!/bin/bash
+
+APP=$1
+DATE=`date +%Y-%m-%d`
+LOGFILE="${APP}-${DATE}.log"
+REMOTE_DIR=/usr/local/applogs/laravel
+LOCAL_DIR=/var/www/${APP}/storage/logs
+
+if [ "$2" == "local" ]
+then
+    FULL_LOGFILE="${LOCAL_DIR}/${LOGFILE}"
+else
+    FULL_LOGFILE="${REMOTE_DIR}/${LOGFILE}"
+fi
+
+    multitail \
+        -cS php -e 'INFO' -l "tail -f -n 30 ${FULL_LOGFILE}" \
+        -cS php -e 'DEBUG|LOGIN|NOTICE|ERROR|WARNING' -l "tail -f -n 30 ${FULL_LOGFILE}"
+
+
+

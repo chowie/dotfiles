@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+git diff --cached --name-only | while read FILE; do
+
+if [[ "$FILE" =~ ^.+(php|inc|module|install|test|md)$ ]]; then
+    RESULT=$(grep -E "\b(dd\(|TODO)" "$FILE")
+    if [[ ! -z $RESULT ]]; then
+      echo -e "\e[1;33m\tWarning, the commit contains a call to dd() or TODO. Commit was not aborted, however.\e[0m" >&2
+    fi
+fi
+done
+
+

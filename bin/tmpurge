@@ -1,0 +1,13 @@
+#!/bin/bash
+
+TMDIR="/Volumes/External/Backups.backupdb/howiecha-imac"
+
+function tmpurge() {
+
+    for i in `ls ${TMDIR}`;
+    do
+        echo $i | awk -F'-' '$1>=2014 && $1<=2015 {print}' | xargs -I {} tmutil delete "${TMDIR}/"{}
+        #echo $i | awk -F'-' '$1>=2014 && $1<=2015 {print}' | xargs -I {} echo "${TMDIR}/"{}
+    done;
+
+}
